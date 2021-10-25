@@ -1,2 +1,3 @@
-module Puissance4_IA {
+module Swing {
+	requires java.desktop;
 }

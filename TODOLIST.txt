@@ -1,0 +1,5 @@
+* faire interface graphique 
+	* integrer les images sur un dossier du projet (jeton rouge, jeton jaune, background)
+
+* afficher les probabilités sur la grille (= montre comment est calculé les meilleurs coups)
+* supprimer les classes non utilisées 

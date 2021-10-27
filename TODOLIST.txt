@@ -3,3 +3,6 @@
 
 * afficher les probabilités sur la grille (= montre comment est calculé les meilleurs coups)
 * supprimer les classes non utilisées 
+
+
+LAIDI => ARTHUR : J'ai rajouté dans la classe grille un tableau poids colonne je te le renseigenerais a chaque calcul avec l'IA

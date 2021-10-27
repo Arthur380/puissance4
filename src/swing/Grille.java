@@ -12,6 +12,7 @@ public class Grille {
 	public static final int CONDITION_VICTOIRE = 4;
 	private char tabJeu[][];
 	private int nombreDeTour = 0;
+	private int poidsColonnes[];
 
 	public JoueurAbstrait getJoueur1() {
 		return joueur1;

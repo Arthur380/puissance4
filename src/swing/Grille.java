@@ -5,14 +5,24 @@ import java.util.Arrays;
 
 import javax.swing.JTable;
 
-public class Grille {
 
+public class Grille {
+	// de gauche a droite
 	public static final int LARGEUR = 7;
+	// de bas en haut
 	public static final int LONGUEUR = 6;
 	public static final int CONDITION_VICTOIRE = 4;
 	private char tabJeu[][];
 	private int nombreDeTour = 0;
 	private int poidsColonnes[];
+
+	public int[] getPoidsColonnes() {
+		return poidsColonnes;
+	}
+
+	public void setPoidsColonnes(int[] poidsColonnes) {
+		this.poidsColonnes = poidsColonnes;
+	}
 
 	public JoueurAbstrait getJoueur1() {
 		return joueur1;
@@ -34,7 +44,7 @@ public class Grille {
 	private JoueurAbstrait joueur2;
 
 	public JoueurAbstrait j() {
-		//tour paire = joueur 1 / impaire joueur 2
+		// tour paire = joueur 1 / impaire joueur 2
 		if (this.getNombreDeTour() % 2 == 0)
 			return getJoueur1();
 		else
@@ -90,12 +100,14 @@ public class Grille {
 	public boolean colPleine(int i) {
 		// retourne vrai si on a autre chose que du vide en haut (le tableau est init a
 		// blanc)
-		return (this.tabJeu[i][LARGEUR] != ' ');
+		return (this.tabJeu[i][LONGUEUR] != ' ');
 	}
+
 	public boolean grillePleine(int i) {
-	// la grille est pleine si on a autant de case de que nombre de tour
-		return (LARGEUR*LONGUEUR ==this.getNombreDeTour());
+		// la grille est pleine si on a autant de case de que nombre de tour
+		return (LARGEUR * LONGUEUR == this.getNombreDeTour());
 	}
+
 	public int dernierSymbole(int i) {
 		// on verifie que on a pas déjà rempli la colonne
 		if (colPleine(i)) {
@@ -123,8 +135,116 @@ public class Grille {
 		}
 		return colonnesJouables;
 	}
+
 	public JoueurAbstrait getTourDeQuelJoueur() {
-		return (this.getNombreDeTour()%2==1 ? this.getJoueur2() : this.getJoueur1());
+		return (this.getNombreDeTour() % 2 == 1 ? this.getJoueur2() : this.getJoueur1());
+	}
+
+	// on verifie que a qui c'est le tour fonction inverse de getTourDeQuelJoueur
+	public JoueurAbstrait getTourJoueurSuivant() {
+		return (this.getNombreDeTour() % 2 == 1 ? this.getJoueur1() : this.getJoueur2());
+	}
+
+	// pour calculer le poids nous allons parcourir le tableau de la grille actuel
+	// de plusieurs maniére en evitant de dupliquer les comptes
+	// de haut en bas pour chaque case on fait 4 test
+	// horizontal vers la droite =>
+	// diagonale bas droite et diagonale bas gauche
+	// vertical vers le bas
+	// on a un dernierSymbole qui retourne la derniéreligne joué sur cette colonne (
+	// la plus haute)
+	public int poids(JoueurAbstrait joueur) {			
+		int poids = 0, poidsAlignement=0;
+		int descendreLigne=-1, colonneGauche=-1, colonneDroite=1,Stable=0;
+		// d'abord on regarde si l'adversaire gagne c'est un min si il gagne( on inverse donc le resultat
+		for (int i = 1; i <= LARGEUR; i++) {
+			for (int j = this.dernierSymbole(i); j > -1 ; j--) {
+			//	poids = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j); 
+				if(this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneGauche,descendreLigne) == AlgoAlphaBeta.MAX) {
+					return AlgoAlphaBeta.MIN;
+				}
+				if(this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneDroite,descendreLigne) == AlgoAlphaBeta.MAX) {
+					return AlgoAlphaBeta.MIN;
+				}
+				if(this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,Stable,descendreLigne) == AlgoAlphaBeta.MAX) {
+					return AlgoAlphaBeta.MIN;
+				}
+				if(this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneDroite,Stable) == AlgoAlphaBeta.MAX) {
+					return AlgoAlphaBeta.MIN;
+				}
+			}
+		}
+		
+		// on fait le poids pour le joueur actuel
+		for (int i = 1; i <= LARGEUR; i++) {
+			for (int j = this.dernierSymbole(i); j > -1; j--) {
+				poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneGauche,descendreLigne);
+				if(poidsAlignement == AlgoAlphaBeta.MAX) {
+					return AlgoAlphaBeta.MAX;
+				}
+				else {
+					poids += poidsAlignement;
+					poidsAlignement= 0;
+				}
+				poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneDroite,descendreLigne); 
+					if(poidsAlignement == AlgoAlphaBeta.MAX) {
+						return AlgoAlphaBeta.MAX;
+					}
+					else {
+						poids += poidsAlignement;
+						poidsAlignement= 0;
+					}
+					poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,Stable,descendreLigne); 
+					if(poidsAlignement == AlgoAlphaBeta.MAX) {
+						return AlgoAlphaBeta.MAX;
+					}
+					else {
+						poids += poidsAlignement;
+						poidsAlignement= 0;
+					}
+					poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneDroite,Stable); 
+					if(poidsAlignement == AlgoAlphaBeta.MAX) {
+						return AlgoAlphaBeta.MAX;
+					}
+					else {
+						poids += poidsAlignement;
+						poidsAlignement= 0;
+					}
+				
+			}
+		}
+		return poids;
+		
+	}
+
+	// Nous allons parcourir la grille en se deplacant via deplacementLargeur
+	// deplacementLongueur en incrementant automatiquement les valeur par elle même
+	public int parcoursResultatGrille(char symbole,int lignerDepart, int colonneDepart,int deplacementColonne,int deplacementLigne) {
+		int valeurColonne,colonne=colonneDepart, ligne=lignerDepart ;
+		int boucleMax=0,poidsColonne=0;
+		boolean boucler =true;
+		// la longeur = ligne 
+		// la largeur = colonne 
+		//
+		while(this.LONGUEUR<=deplacementColonne && this.LARGEUR >=0 && boucleMax < this.CONDITION_VICTOIRE && boucler){
+			
+			if( tabJeu[colonne][ligne]==symbole) {
+				poidsColonne +=1;
+			}
+			else { boucler=false; }
+			
+			
+			// on continue le deplacement !
+			colonne+=deplacementColonne;
+			ligne+=deplacementLigne;
+			boucleMax++;
+			
+		}
+		// c'est qu'on a les conditions de victoire
+		if(poidsColonne==this.CONDITION_VICTOIRE) {
+			return AlgoAlphaBeta.MIN;
+		}
+		return poidsColonne;
 	}
 
 	public boolean chercheAlignement4(int rang, char symbole) {

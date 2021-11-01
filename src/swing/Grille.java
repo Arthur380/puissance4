@@ -83,12 +83,13 @@ public class Grille {
 	public void insere(int i, char symbole) {
 		if (colPleine(i)) {
 			System.out.println("Colonne " + i + "est pleine");
-		}
+		}else{
 		// on prends la dernioere valeur joué sur cette colonne
 		int j = this.dernierSymbole(i);
 
 		this.tabJeu[i][j] = symbole;
 		this.setNombreDeTour(this.getNombreDeTour() + 1);
+		}
 	}
 
 	public Grille Copie() {
@@ -101,12 +102,12 @@ public class Grille {
 	}
 
 	public boolean colPleine(int i) {
-		// retourne vrai si on a autre chose que du vide en haut (le tableau est init a
-		// blanc)
+		// retourne vrai si on a autre chose que . en haut (le tableau est init a
+		// .)
 	//	System.out.print("\n Colpleine " + (this.tabJeu[i][LONGUEUR-1] != ' ')+" Col "+ i+" " +this.tabJeu[i][LONGUEUR-1]);
-		this.afficheGrille();
-		System.out.print("\n foinction  Colpleine "+this.tabJeu[i][LONGUEUR-1]+ "<= valeur" +(this.tabJeu[i][LONGUEUR-1] == '.')+" Col "+ (this.tabJeu[i][LONGUEUR-1] == ' '));
-		return !(this.tabJeu[i][LONGUEUR-1] == '.');
+	
+		
+		return !(this.tabJeu[i][0] == '.');
 	}
 
 	public boolean grillePleine(int i) {
@@ -122,13 +123,13 @@ public class Grille {
 			return -1;
 		} else {
 			// on part du haut de la grille (visuellement le bas)
-			//int ligneTester = LONGUEUR - 1;
-			int ligneTester = 0;
-			
+			int ligneTester = LONGUEUR - 1;
+			//int ligneTester = 0;
+	
 			// tant qu'on est sur un char different de blanc on monte
 			while (tabJeu[i][ligneTester] != '.') {
 				
-				ligneTester++;
+				ligneTester--;
 				
 			}
 			
@@ -239,9 +240,10 @@ public class Grille {
 		// la longeur = ligne 
 		// la largeur = colonne 
 		//
-		while(this.LONGUEUR<deplacementColonne && this.LARGEUR >0 && boucleMax < this.CONDITION_VICTOIRE && boucler){
+	
+		while((ligne< this.LONGUEUR && ligne >=0)&&( colonne < this.LARGEUR && colonne>=0)  && boucleMax <= this.CONDITION_VICTOIRE && boucler){
 			
-			if( tabJeu[colonne][ligne]==symbole) {
+			if( tabJeu[ligne][colonne]==symbole) {
 				poidsColonne +=1;
 			}
 			else { boucler=false; }
@@ -261,10 +263,11 @@ public class Grille {
 	}
 
 	public void afficheGrille() {
-		for(int y = 0 ; y < LARGEUR ; y++){
+		System.out.println();
+		for(int y = 0 ; y < LONGUEUR  ; y++){
 			System.out.print('|');
-			for(int x = 0 ; x < LONGUEUR ; x++){
-				System.out.print(" " + tabJeu[y][x] + " ");
+			for(int x = 0 ; x <LARGEUR  ; x++){
+				System.out.print(" " + tabJeu[x][y] + " ");
 			}
 			System.out.print('|');
 			System.out.println();
@@ -377,6 +380,28 @@ public class Grille {
 		} else
 			System.out.println("****PAS VICTOIRE DE " + symbole + "**** en " + win);
 		return false;
+
+	}
+	
+	public static void main(String[] args) {
+		boolean win = true;
+		Grille grille = new Grille();
+		JoueurAbstrait joueurA = new Humain('x', 4);
+		joueurA.setNom("Joueur 1 ");
+		JoueurAbstrait joueurB = new Ordinateur('O', 4);
+		joueurB.setNom("Joueur 2 ");
+		grille.setJoueur1(joueurA);
+		grille.setJoueur2(joueurB);
+		
+			grille.afficheGrille();
+			JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
+			JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
+
+			
+			grille.insere(1,JoueurActuel.getSymbole());
+			grille.afficheGrille();
+			System.out.print("\n grille  "+ grille.tabJeu[1][5]);
+			System.out.print("\n grille  "+ grille.colPleine(1));
 
 	}
 

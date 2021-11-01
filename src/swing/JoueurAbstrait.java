@@ -38,6 +38,6 @@ public abstract class JoueurAbstrait {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-
-	public abstract int placerChar(Grille grille, JoueurAbstrait joueur, JoueurAbstrait opposant);
+// methode abstraite qui sera implementé chez le joueur et L'IA
+	public abstract int placerChar(Grille grille);
 }

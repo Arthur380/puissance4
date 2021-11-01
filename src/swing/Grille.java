@@ -71,9 +71,10 @@ public class Grille {
 
 	public Grille() {
 		this.tabJeu = new char[LARGEUR][LONGUEUR];
-		for (int i = 1; i <= LARGEUR; i++) {
-			for (int j = 1; j <= LONGUEUR; j++) {
-				this.tabJeu[i][j] = ' ';
+		for (int i = 0; i < LARGEUR; i++) {
+			for (int j = 0; j < LONGUEUR; j++) {
+				
+				this.tabJeu[i][j] = '.';
 			}
 		}
 		nombreDeTour = 0;
@@ -94,13 +95,18 @@ public class Grille {
 		Grille copieDeLaGrille = new Grille();
 		copieDeLaGrille.setTabJeu(Arrays.copyOf(this.tabJeu, this.tabJeu.length));
 		copieDeLaGrille.setNombreDeTour(this.getNombreDeTour());
+		copieDeLaGrille.setJoueur1(joueur1);
+		copieDeLaGrille.setJoueur2(joueur2);
 		return copieDeLaGrille;
 	}
 
 	public boolean colPleine(int i) {
 		// retourne vrai si on a autre chose que du vide en haut (le tableau est init a
 		// blanc)
-		return (this.tabJeu[i][LONGUEUR] != ' ');
+	//	System.out.print("\n Colpleine " + (this.tabJeu[i][LONGUEUR-1] != ' ')+" Col "+ i+" " +this.tabJeu[i][LONGUEUR-1]);
+		this.afficheGrille();
+		System.out.print("\n foinction  Colpleine "+this.tabJeu[i][LONGUEUR-1]+ "<= valeur" +(this.tabJeu[i][LONGUEUR-1] == '.')+" Col "+ (this.tabJeu[i][LONGUEUR-1] == ' '));
+		return !(this.tabJeu[i][LONGUEUR-1] == '.');
 	}
 
 	public boolean grillePleine(int i) {
@@ -109,16 +115,23 @@ public class Grille {
 	}
 
 	public int dernierSymbole(int i) {
+		
 		// on verifie que on a pas déjà rempli la colonne
 		if (colPleine(i)) {
+			
 			return -1;
 		} else {
 			// on part du haut de la grille (visuellement le bas)
-			int ligneTester = LARGEUR - 1;
+			//int ligneTester = LONGUEUR - 1;
+			int ligneTester = 0;
+			
 			// tant qu'on est sur un char different de blanc on monte
-			while (tabJeu[i][ligneTester] != ' ') {
-				ligneTester--;
+			while (tabJeu[i][ligneTester] != '.') {
+				
+				ligneTester++;
+				
 			}
+			
 			return ligneTester;
 		}
 	}
@@ -128,7 +141,7 @@ public class Grille {
 		ArrayList<Integer> colonnesJouables = new ArrayList<Integer>();
 
 		// Donne les colonnes jouables dans un ordre croissant
-		for (int i = 1; i <= this.LARGEUR; i++) {
+		for (int i = 0; i < this.LARGEUR; i++) {
 			if (this.colPleine(i) != true) {
 				colonnesJouables.add(i);
 			}
@@ -157,7 +170,7 @@ public class Grille {
 		int poids = 0, poidsAlignement=0;
 		int descendreLigne=-1, colonneGauche=-1, colonneDroite=1,Stable=0;
 		// d'abord on regarde si l'adversaire gagne c'est un min si il gagne( on inverse donc le resultat
-		for (int i = 1; i <= LARGEUR; i++) {
+		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = this.dernierSymbole(i); j > -1 ; j--) {
 			//	poids = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j); 
 				if(this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneGauche,descendreLigne) == AlgoAlphaBeta.MAX) {
@@ -176,7 +189,7 @@ public class Grille {
 		}
 		
 		// on fait le poids pour le joueur actuel
-		for (int i = 1; i <= LARGEUR; i++) {
+		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = this.dernierSymbole(i); j > -1; j--) {
 				poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneGauche,descendreLigne);
 				if(poidsAlignement == AlgoAlphaBeta.MAX) {
@@ -226,7 +239,7 @@ public class Grille {
 		// la longeur = ligne 
 		// la largeur = colonne 
 		//
-		while(this.LONGUEUR<=deplacementColonne && this.LARGEUR >=0 && boucleMax < this.CONDITION_VICTOIRE && boucler){
+		while(this.LONGUEUR<deplacementColonne && this.LARGEUR >0 && boucleMax < this.CONDITION_VICTOIRE && boucler){
 			
 			if( tabJeu[colonne][ligne]==symbole) {
 				poidsColonne +=1;
@@ -245,6 +258,17 @@ public class Grille {
 			return AlgoAlphaBeta.MIN;
 		}
 		return poidsColonne;
+	}
+
+	public void afficheGrille() {
+		for(int y = 0 ; y < LARGEUR ; y++){
+			System.out.print('|');
+			for(int x = 0 ; x < LONGUEUR ; x++){
+				System.out.print(" " + tabJeu[y][x] + " ");
+			}
+			System.out.print('|');
+			System.out.println();
+		}
 	}
 
 	public boolean chercheAlignement4(int rang, char symbole) {

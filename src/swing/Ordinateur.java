@@ -11,10 +11,10 @@ public class Ordinateur extends JoueurAbstrait {
 		this.IA = new AlgoAlphaBeta(niveau);
 	}
 
-// on qui va servir a faire jouer L ! =)
+// on qui va servir a faire jouer L'IA ! =)
 	@Override
-	public int placerChar(Grille grille,JoueurAbstrait joueur, JoueurAbstrait opposant)  {
-		return IA.ouJouer(joueur, grille);
+	public int placerChar(Grille grille)  {
+		return IA.ouJouer(this, grille);
 	}
 
 }

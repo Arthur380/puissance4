@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import javax.swing.JTable;
 
-
 public class Grille {
 	// de gauche a droite
 	public static final int LARGEUR = 7;
@@ -73,7 +72,7 @@ public class Grille {
 		this.tabJeu = new char[LARGEUR][LONGUEUR];
 		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = 0; j < LONGUEUR; j++) {
-				
+
 				this.tabJeu[i][j] = '.';
 			}
 		}
@@ -83,12 +82,12 @@ public class Grille {
 	public void insere(int i, char symbole) {
 		if (colPleine(i)) {
 			System.out.println("Colonne " + i + "est pleine");
-		}else{
-		// on prends la dernioere valeur joué sur cette colonne
-		int j = this.dernierSymbole(i);
+		} else {
+			// on prends la dernioere valeur joué sur cette colonne
+			int j = this.dernierSymbole(i);
 
-		this.tabJeu[i][j] = symbole;
-		this.setNombreDeTour(this.getNombreDeTour() + 1);
+			this.tabJeu[i][j] = symbole;
+			this.setNombreDeTour(this.getNombreDeTour() + 1);
 		}
 	}
 
@@ -104,9 +103,9 @@ public class Grille {
 	public boolean colPleine(int i) {
 		// retourne vrai si on a autre chose que . en haut (le tableau est init a
 		// .)
-	//	System.out.print("\n Colpleine " + (this.tabJeu[i][LONGUEUR-1] != ' ')+" Col "+ i+" " +this.tabJeu[i][LONGUEUR-1]);
-	
-		
+		// System.out.print("\n Colpleine " + (this.tabJeu[i][LONGUEUR-1] != ' ')+" Col
+		// "+ i+" " +this.tabJeu[i][LONGUEUR-1]);
+
 		return !(this.tabJeu[i][0] == '.');
 	}
 
@@ -116,23 +115,23 @@ public class Grille {
 	}
 
 	public int dernierSymbole(int i) {
-		
+
 		// on verifie que on a pas déjà rempli la colonne
 		if (colPleine(i)) {
-			
+
 			return -1;
 		} else {
 			// on part du haut de la grille (visuellement le bas)
 			int ligneTester = LONGUEUR - 1;
-			//int ligneTester = 0;
-	
+			// int ligneTester = 0;
+
 			// tant qu'on est sur un char different de blanc on monte
 			while (tabJeu[i][ligneTester] != '.') {
-				
+
 				ligneTester--;
-				
+
 			}
-			
+
 			return ligneTester;
 		}
 	}
@@ -167,96 +166,104 @@ public class Grille {
 	// vertical vers le bas
 	// on a un dernierSymbole qui retourne la derniéreligne joué sur cette colonne (
 	// la plus haute)
-	public int poids(JoueurAbstrait joueur) {			
-		int poids = 0, poidsAlignement=0;
-		int descendreLigne=-1, colonneGauche=-1, colonneDroite=1,Stable=0;
-		// d'abord on regarde si l'adversaire gagne c'est un min si il gagne( on inverse donc le resultat
+	public int poids(JoueurAbstrait joueur) {
+		int poids = 0, poidsAlignement = 0;
+		int descendreLigne = 1, colonneGauche = -1, colonneDroite = 1, Stable = 0;
+		// d'abord on regarde si l'adversaire gagne c'est un min si il gagne( on inverse
+		// donc le resultat
 		for (int i = 0; i < LARGEUR; i++) {
-			for (int j = this.dernierSymbole(i); j > -1 ; j--) {
-			//	poids = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j); 
-				if(this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneGauche,descendreLigne) == AlgoAlphaBeta.MAX) {
+			for (int j = this.dernierSymbole(i); j > -1; j--) {
+				// poids =
+				// this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j);
+				if (this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j, colonneGauche,
+						descendreLigne) == AlgoAlphaBeta.MAX) {
 					return AlgoAlphaBeta.MIN;
 				}
-				if(this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneDroite,descendreLigne) == AlgoAlphaBeta.MAX) {
+				if (this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j, colonneDroite,
+						descendreLigne) == AlgoAlphaBeta.MAX) {
 					return AlgoAlphaBeta.MIN;
 				}
-				if(this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,Stable,descendreLigne) == AlgoAlphaBeta.MAX) {
+				if (this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j, Stable,
+						descendreLigne) == AlgoAlphaBeta.MAX) {
 					return AlgoAlphaBeta.MIN;
 				}
-				if(this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneDroite,Stable) == AlgoAlphaBeta.MAX) {
+				if (this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j, colonneDroite,
+						Stable) == AlgoAlphaBeta.MAX) {
 					return AlgoAlphaBeta.MIN;
 				}
 			}
 		}
-		
+
 		// on fait le poids pour le joueur actuel
 		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = this.dernierSymbole(i); j > -1; j--) {
-				poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneGauche,descendreLigne);
-				if(poidsAlignement == AlgoAlphaBeta.MAX) {
+				poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j,
+						colonneGauche, descendreLigne);
+				if (poidsAlignement == AlgoAlphaBeta.MAX) {
 					return AlgoAlphaBeta.MAX;
-				}
-				else {
+				} else {
 					poids += poidsAlignement;
-					poidsAlignement= 0;
+					poidsAlignement = 0;
 				}
-				poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneDroite,descendreLigne); 
-					if(poidsAlignement == AlgoAlphaBeta.MAX) {
-						return AlgoAlphaBeta.MAX;
-					}
-					else {
-						poids += poidsAlignement;
-						poidsAlignement= 0;
-					}
-					poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,Stable,descendreLigne); 
-					if(poidsAlignement == AlgoAlphaBeta.MAX) {
-						return AlgoAlphaBeta.MAX;
-					}
-					else {
-						poids += poidsAlignement;
-						poidsAlignement= 0;
-					}
-					poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j,colonneDroite,Stable); 
-					if(poidsAlignement == AlgoAlphaBeta.MAX) {
-						return AlgoAlphaBeta.MAX;
-					}
-					else {
-						poids += poidsAlignement;
-						poidsAlignement= 0;
-					}
-				
+				poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j,
+						colonneDroite, descendreLigne);
+				if (poidsAlignement == AlgoAlphaBeta.MAX) {
+					return AlgoAlphaBeta.MAX;
+				} else {
+					poids += poidsAlignement;
+					poidsAlignement = 0;
+				}
+				poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j, Stable,
+						descendreLigne);
+				if (poidsAlignement == AlgoAlphaBeta.MAX) {
+					return AlgoAlphaBeta.MAX;
+				} else {
+					poids += poidsAlignement;
+					poidsAlignement = 0;
+				}
+				poidsAlignement = this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j,
+						colonneDroite, Stable);
+				if (poidsAlignement == AlgoAlphaBeta.MAX) {
+					return AlgoAlphaBeta.MAX;
+				} else {
+					poids += poidsAlignement;
+					poidsAlignement = 0;
+				}
+
 			}
 		}
 		return poids;
-		
+
 	}
 
 	// Nous allons parcourir la grille en se deplacant via deplacementLargeur
 	// deplacementLongueur en incrementant automatiquement les valeur par elle même
-	public int parcoursResultatGrille(char symbole,int lignerDepart, int colonneDepart,int deplacementColonne,int deplacementLigne) {
-		int valeurColonne,colonne=colonneDepart, ligne=lignerDepart ;
-		int boucleMax=0,poidsColonne=0;
-		boolean boucler =true;
-		// la longeur = ligne 
-		// la largeur = colonne 
+	public int parcoursResultatGrille(char symbole, int lignerDepart, int colonneDepart, int deplacementColonne,
+			int deplacementLigne) {
+		int valeurColonne, colonne = colonneDepart, ligne = lignerDepart;
+		int boucleMax = 0, poidsColonne = 0;
+		boolean boucler = true;
+		// la longeur = ligne
+		// la largeur = colonne
 		//
-	
-		while((ligne< this.LONGUEUR && ligne >=0)&&( colonne < this.LARGEUR && colonne>=0)  && boucleMax <= this.CONDITION_VICTOIRE && boucler){
-			
-			if( tabJeu[ligne][colonne]==symbole) {
-				poidsColonne +=1;
+
+		while ((ligne < this.LONGUEUR && ligne >= 0) && (colonne < this.LARGEUR && colonne >= 0)
+				&& boucleMax <= this.CONDITION_VICTOIRE && boucler) {
+
+			if (tabJeu[ligne][colonne] == symbole) {
+				poidsColonne += 1;
+			} else {
+				boucler = false;
 			}
-			else { boucler=false; }
-			
-			
+
 			// on continue le deplacement !
-			colonne+=deplacementColonne;
-			ligne+=deplacementLigne;
+			colonne += deplacementColonne;
+			ligne += deplacementLigne;
 			boucleMax++;
-			
+
 		}
 		// c'est qu'on a les conditions de victoire
-		if(poidsColonne==this.CONDITION_VICTOIRE) {
+		if (poidsColonne == this.CONDITION_VICTOIRE) {
 			return AlgoAlphaBeta.MIN;
 		}
 		return poidsColonne;
@@ -264,9 +271,9 @@ public class Grille {
 
 	public void afficheGrille() {
 		System.out.println();
-		for(int y = 0 ; y < LONGUEUR  ; y++){
+		for (int y = 0; y < LONGUEUR; y++) {
 			System.out.print('|');
-			for(int x = 0 ; x <LARGEUR  ; x++){
+			for (int x = 0; x < LARGEUR; x++) {
 				System.out.print(" " + tabJeu[x][y] + " ");
 			}
 			System.out.print('|');
@@ -382,7 +389,7 @@ public class Grille {
 		return false;
 
 	}
-	
+
 	public static void main(String[] args) {
 		boolean win = true;
 		Grille grille = new Grille();
@@ -392,16 +399,17 @@ public class Grille {
 		joueurB.setNom("Joueur 2 ");
 		grille.setJoueur1(joueurA);
 		grille.setJoueur2(joueurB);
-		
-			grille.afficheGrille();
-			JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
-			JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
 
-			
-			grille.insere(1,JoueurActuel.getSymbole());
-			grille.afficheGrille();
-			System.out.print("\n grille  "+ grille.tabJeu[1][5]);
-			System.out.print("\n grille  "+ grille.colPleine(1));
+		grille.afficheGrille();
+		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
+		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
+
+		grille.insere(4, JoueurActuel.getSymbole());
+		grille.insere(4, JoueurActuel.getSymbole());
+		grille.insere(4, JoueurActuel.getSymbole());
+		grille.insere(1, JoueurActuel.getSymbole());
+		grille.afficheGrille();
+		System.out.print("\n poids  " + grille.poids(JoueurActuel));
 
 	}
 

@@ -39,7 +39,7 @@ public class AlgoAlphaBeta {
 			// pour cette colonne donc next
 			
 			if (!grille.colPleine(i) ) {
-				System.out.print("\n Colonne ----------------" + i );
+			//	System.out.print("\n Colonne ----------------" + i );
 				// copie de la grille (grille courante a la boucle for)
 				Grille copieDeLaGrille = grille.Copie();
 				
@@ -64,7 +64,7 @@ public class AlgoAlphaBeta {
 			}
 			
 		}
-
+		System.out.print("\n Colonne ----------------" +poidsColonne.toString() );
 		grille.setPoidsColonnes(poidsColonne);
 		return colAjouer;
 	}
@@ -121,7 +121,7 @@ public class AlgoAlphaBeta {
 			return valeurDeJeu;
 		} else {
 			int result = grille.poids(joueur);
-			System.out.print("\n max result  "+ result);
+			//System.out.print("\n max result  "+ result);
 			return result;
 		}
 	}
@@ -131,6 +131,7 @@ public class AlgoAlphaBeta {
 	}
 
 	public static void main(String[] args) {
+		long debut = System.currentTimeMillis();
 		boolean win = true;
 		Grille grille = new Grille();
 		JoueurAbstrait joueurA = new Humain('x', 4);
@@ -141,6 +142,11 @@ public class AlgoAlphaBeta {
 		grille.setJoueur2(joueurB);
 		//grille.insere(1,joueurA.getSymbole());	
 		int numeroColonneOuJouer = joueurB.placerChar(grille);
+		grille.afficheGrille();
+		System.out.print("\n numeroColonneOuJouer  "+  numeroColonneOuJouer);
+		grille.insere(numeroColonneOuJouer,joueurA.getSymbole());	
+		grille.afficheGrille();
+		System.out.println("\n"+ (System.currentTimeMillis()-debut));
 	/*	while (win) {
 		
 			grille.afficheGrille();

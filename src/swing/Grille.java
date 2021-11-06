@@ -5,12 +5,13 @@ import java.util.Arrays;
 
 import javax.swing.JTable;
 
-public class Grille {
+public class Grille extends Object implements Cloneable {
 	// de gauche a droite
 	public static final int LARGEUR = 7;
 	// de bas en haut
 	public static final int LONGUEUR = 6;
 	public static final int CONDITION_VICTOIRE = 4;
+	public static final char CHAR_NULL = '.';
 	private char tabJeu[][];
 	private int nombreDeTour = 0;
 	private int poidsColonnes[];
@@ -73,7 +74,7 @@ public class Grille {
 		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = 0; j < LONGUEUR; j++) {
 
-				this.tabJeu[i][j] = '.';
+				this.tabJeu[i][j] = CHAR_NULL;
 			}
 		}
 		nombreDeTour = 0;
@@ -93,11 +94,37 @@ public class Grille {
 
 	public Grille Copie() {
 		Grille copieDeLaGrille = new Grille();
-		copieDeLaGrille.setTabJeu(Arrays.copyOf(this.tabJeu, this.tabJeu.length));
+		copieDeLaGrille.setTabJeu(cloneArray(this.tabJeu));
 		copieDeLaGrille.setNombreDeTour(this.getNombreDeTour());
 		copieDeLaGrille.setJoueur1(joueur1);
 		copieDeLaGrille.setJoueur2(joueur2);
 		return copieDeLaGrille;
+		
+	}
+	public Object clone() {
+		try {
+			Grille CopieGrille = (Grille) super.clone();
+			CopieGrille.tabJeu = (char [][]) this.tabJeu.clone(); //clonage de this.tabJeu
+
+			 return CopieGrille;
+			 }
+			 catch (CloneNotSupportedException e){
+			 throw new InternalError();
+			 }	
+	}
+	/**
+	 * Clones the provided array
+	 * 
+	 * @param src
+	 * @return a new clone of the provided array
+	 */
+	public static char[][] cloneArray(char[][] src) {
+	    int length = src.length;
+	    char[][] target = new char[length][src[0].length];
+	    for (int i = 0; i < length; i++) {
+	        System.arraycopy(src[i], 0, target[i], 0, src[i].length);
+	    }
+	    return target;
 	}
 
 	public boolean colPleine(int i) {
@@ -126,7 +153,7 @@ public class Grille {
 			// int ligneTester = 0;
 
 			// tant qu'on est sur un char different de blanc on monte
-			while (tabJeu[i][ligneTester] != '.') {
+			while (tabJeu[i][ligneTester] != CHAR_NULL) {
 
 				ligneTester--;
 
@@ -166,62 +193,69 @@ public class Grille {
 	// vertical vers le bas
 	// on a un dernierSymbole qui retourne la derniéreligne joué sur cette colonne (
 	// la plus haute)
-	public int poids(JoueurAbstrait joueur) {
+	public int poids(JoueurAbstrait joueur ) {
 		int poids = 0, poidsAlignement = 0;
 		int descendreLigne = 1, colonneGauche = -1, colonneDroite = 1, Stable = 0;
 		// d'abord on regarde si l'adversaire gagne c'est un min si il gagne( on inverse
 		// donc le resultat
 	
-		for (int i = 0; i < LARGEUR; i++) {
+		char SymboleACalculer, SymboleOpposant;
+		SymboleACalculer = joueur.getSymbole();
+		if (this.getTourJoueurSuivant().getSymbole()!=SymboleACalculer ) {
+			SymboleOpposant  =this.getTourJoueurSuivant().getSymbole();
+		}else
+		{
+			SymboleOpposant  =this.getTourDeQuelJoueur().getSymbole();
+		}
+	
+
+	/*	for (int i = 0; i < LARGEUR; i++) {
 			for (int j = this.dernierSymbole(i); j < LONGUEUR; j--) {
 				// poids =
 				// this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j);
-				if (this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j, colonneGauche,
-						descendreLigne) == AlgoAlphaBeta.MAX) {
+				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneGauche,descendreLigne) == AlgoAlphaBeta.MAX) {
 					return AlgoAlphaBeta.MIN;
 				}
-				if (this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j, colonneDroite,
-						descendreLigne) == AlgoAlphaBeta.MAX) {
+				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneDroite,descendreLigne) == AlgoAlphaBeta.MAX) {
 					return AlgoAlphaBeta.MIN;
 				}
-				if (this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j, Stable,
-						descendreLigne) == AlgoAlphaBeta.MAX) {
+				if (this.parcoursResultatGrille(SymboleACalculer, i, j, Stable,descendreLigne) == AlgoAlphaBeta.MAX) {
 					return AlgoAlphaBeta.MIN;
 				}
-				if (this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(), i, j, colonneDroite,
-						Stable) == AlgoAlphaBeta.MAX) {
+				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneDroite,	Stable) == AlgoAlphaBeta.MAX) {
 					return AlgoAlphaBeta.MIN;
 				}
 			}
-		} 
+		} */
+	
 
 		// on fait le poids pour le joueur actuel
 		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = this.dernierSymbole(i); j < LONGUEUR; j++) {
-				poidsAlignement = this.parcoursResultatGrille(this.getTourDeQuelJoueur().getSymbole(), i, j,colonneGauche, descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MAX;
+				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneGauche, descendreLigne);
+				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
+					return poidsAlignement;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
-				poidsAlignement = this.parcoursResultatGrille(this.getTourDeQuelJoueur().getSymbole(), i, j,colonneDroite, descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MAX;
+				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, descendreLigne);
+				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
+					return poidsAlignement;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
-				poidsAlignement = this.parcoursResultatGrille(this.getTourDeQuelJoueur().getSymbole(), i, j, Stable,descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MAX;
+				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j, Stable,descendreLigne);
+				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
+					return poidsAlignement;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
-				poidsAlignement = this.parcoursResultatGrille(this.getTourDeQuelJoueur().getSymbole(), i, j,colonneDroite, Stable);
-				if (poidsAlignement == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MAX;
+				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, Stable);
+				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
+					return poidsAlignement;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
@@ -234,7 +268,7 @@ public class Grille {
 
 	// Nous allons parcourir la grille en se deplacant via deplacementLargeur
 	// deplacementLongueur en incrementant automatiquement les valeur par elle même
-	public int parcoursResultatGrille(char symbole,  int colonneDepart, int lignerDepart, int deplacementColonne,
+	public int parcoursResultatGrille(char symboleJoueur, char symboleJoueurOpposant ,  int colonneDepart, int lignerDepart, int deplacementColonne,
 			int deplacementLigne) {
 		int valeurColonne, colonne = colonneDepart, ligne = lignerDepart;
 		int boucleMax = 0, poidsColonne = 0;
@@ -246,22 +280,38 @@ public class Grille {
 		while ((ligne < this.LONGUEUR && ligne >= 0) && (colonne < this.LARGEUR && colonne >= 0)
 				&& boucleMax <= this.CONDITION_VICTOIRE && boucler) {
 							
-			System.out.println("ligne/colonne "+ligne+"/"+colonne+ " Valtab "+this.tabJeu[colonne][ligne]);
-			if (this.tabJeu[colonne][ligne] == symbole) {
-				System.out.println("symbole"+ symbole+" lignerDepart "+ lignerDepart + " colonneDepart "+colonneDepart+ " deplacementColonne "+ deplacementColonne + " deplacementLigne "+deplacementLigne);
+		//	System.out.println("ligne/colonne "+ligne+"/"+colonne+ " Valtab "+this.tabJeu[colonne][ligne]);
+			if (this.tabJeu[colonne][ligne] == symboleJoueur && poidsColonne >=0) {
+
 				poidsColonne += 1;
-			} else {
+				boucleMax++;
+	//			System.out.println("symbole "+ symboleJoueur+" symboleopp "+ symboleJoueurOpposant +" poidsColonne "+ poidsColonne);
+			} else if(this.tabJeu[colonne][ligne] == symboleJoueurOpposant  && poidsColonne < 1) { // on calcul si l'adversaire gagne
+	
+				poidsColonne += -1;		
+				boucleMax++;
+			
+			}
+			else if(this.tabJeu[colonne][ligne] == symboleJoueurOpposant) { // Sa signifie qu'on ne peux aps gagner ca run jeton adversaire bloque
+				poidsColonne = 0;
+				boucler = false;
+			}else {
 				boucler = false;
 			}
 			// on continue le deplacement !
 			colonne += deplacementColonne;
 			ligne += deplacementLigne;
-			boucleMax++;
+			
 		}
 		// c'est qu'on a les conditions de victoire
-		if (poidsColonne == this.CONDITION_VICTOIRE) {
-			return AlgoAlphaBeta.MIN;
+	 if (poidsColonne == this.CONDITION_VICTOIRE) {
+		return AlgoAlphaBeta.MAX;			
+		}else if(poidsColonne == -this.CONDITION_VICTOIRE) {
+			return AlgoAlphaBeta.MIN;			
+		}else if( poidsColonne <0) {
+			poidsColonne = 0;
 		}
+	 
 		return poidsColonne;
 	}
 
@@ -387,6 +437,7 @@ public class Grille {
 	}
 
 	public static void main(String[] args) {
+		long debut = System.currentTimeMillis();
 		boolean win = true;
 		Grille grille = new Grille();
 		JoueurAbstrait joueurA = new Humain('x', 4);
@@ -403,9 +454,25 @@ public class Grille {
 		grille.insere(4, JoueurActuel.getSymbole());
 		grille.insere(4, JoueurActuel.getSymbole());
 		grille.insere(4, JoueurActuel.getSymbole());
+		grille.insere(4, JoueurActuel.getSymbole());
 		grille.insere(1, JoueurActuel.getSymbole());
 		grille.afficheGrille();
-		System.out.print("\n poids  " + grille.poids(JoueurActuel));
+		System.out.print("\n poids  "+joueurA.getNom()+" " + grille.poids(joueurA));		
+		System.out.print("\n poids  " +joueurB.getNom()+" " + grille.poids(joueurB));	
+		System.out.println("\n"+ (System.currentTimeMillis()-debut));
+		Grille g2 = (Grille) grille.clone();
+		System.out.print("\n grille aprés creation G2  " );
+		grille.afficheGrille();
+		g2.insere(1, JoueurActuel.getSymbole());
+		System.out.print("\n grille aprés insertion G2  " );
+		grille.afficheGrille();
+		System.out.print("\n G2 aprés insertion G2  " );
+		g2.afficheGrille();
+		Grille g3 = g2.Copie();
+		g2.insere(1, JoueurActuel.getSymbole());
+		System.out.print("\n g3 aprés insertion G2  " );
+		g3.afficheGrille();
+		g2.afficheGrille();
 	}
 
 }

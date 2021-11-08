@@ -325,6 +325,18 @@ public class Grille extends Object implements Cloneable {
 			System.out.print('|');
 			System.out.println();
 		}
+		try {
+			for (int x = 0; x < poidsColonnes.length; x++) {
+				System.out.print(" " + poidsColonnes[x] + " ");
+				
+			}
+		}   catch(NullPointerException e)
+        {
+            System.out.print("NullPointerException caught");
+        }
+
+	
+			
 	}
 
 	public boolean chercheAlignement4(int rang, char symbole) {

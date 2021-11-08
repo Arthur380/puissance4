@@ -49,7 +49,7 @@ public class AlgoAlphaBeta {
 				int profondeurArbre = copieDeLaGrille.getTourDeQuelJoueur().getNiveau();
 
 				int valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, profondeurArbre);
-		
+				System.out.print("\n Colonne ----------------" +valeurDeJeuCourante );
 				if (valeurDeJeuCourante == valeurDeJeu) {
 					colAjouer = i;
 				} else if (valeurDeJeuCourante > valeurDeJeu) {
@@ -64,7 +64,7 @@ public class AlgoAlphaBeta {
 			}
 			
 		}
-		System.out.print("\n Colonne ----------------" +poidsColonne.toString() );
+	
 		grille.setPoidsColonnes(poidsColonne);
 		return colAjouer;
 	}
@@ -92,7 +92,7 @@ public class AlgoAlphaBeta {
 			return valeurDeJeu;
 		} else {
 			int result = grille.poids(joueur);
-			System.out.print("\n min result  "+ result);
+		//	System.out.print("\n min result  "+ result);
 			return result;
 		}
 	}

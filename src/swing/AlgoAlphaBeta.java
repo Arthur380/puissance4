@@ -31,7 +31,7 @@ public class AlgoAlphaBeta {
 		// ArrayList<Integer> colonnesJouables = grille.colonesJouables();
 		double valeurDeJeu = MIN;
 		int alphaMin = MIN, betaMax = MAX, colAjouer = 0;
-		int poidsColonne[] = new int[Grille.LARGEUR];
+		double poidsColonne[] = new double[Grille.LARGEUR];
 
 		// on va faire le le calcul pouur chaque colonne de la grille
 		for (int i = 0; i < Grille.LARGEUR; i++) {
@@ -48,8 +48,9 @@ public class AlgoAlphaBeta {
 				// profondeur 4 et pour L'IA son niveau)
 				int profondeurArbre = copieDeLaGrille.getTourDeQuelJoueur().getNiveau();
 
+
 				int valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, profondeurArbre);
-				System.out.print("\n Colonne ----------------" +valeurDeJeuCourante );
+
 				if (valeurDeJeuCourante == valeurDeJeu) {
 					colAjouer = i;
 				} else if (valeurDeJeuCourante > valeurDeJeu) {
@@ -64,7 +65,7 @@ public class AlgoAlphaBeta {
 			}
 			
 		}
-	
+		System.out.print("\n Colonne ----------------" +poidsColonne.toString() );
 		grille.setPoidsColonnes(poidsColonne);
 		return colAjouer;
 	}
@@ -91,8 +92,10 @@ public class AlgoAlphaBeta {
 			}
 			return valeurDeJeu;
 		} else {
+
 			int result = grille.poids(joueur);
-		//	System.out.print("\n min result  "+ result);
+			System.out.print("\n min result  "+ result);
+
 			return result;
 		}
 	}

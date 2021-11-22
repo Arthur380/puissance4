@@ -328,6 +328,7 @@ public class Grille extends Object implements Cloneable {
 			System.out.println();
 		}
 
+
 		try {
 			for (int x = 0; x < poidsColonnes.length; x++) {
 				System.out.print(" " + poidsColonnes[x] + " ");
@@ -337,6 +338,7 @@ public class Grille extends Object implements Cloneable {
         {
             System.out.print("NullPointerException caught");
         }			
+
 
 	}
 

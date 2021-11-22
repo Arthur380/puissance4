@@ -74,7 +74,7 @@ public class AlgoAlphaBeta {
 	private int min(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
 	//	System.out.print("\n min  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
 		if (occurence > 0) {
-			double valeurDeJeu = MAX;
+			int valeurDeJeu = MAX;
 			for (int i = 0; i < grille.LARGEUR; i++) {
 				if (!grille.colPleine(i)) {
 					Grille copieDeLaGrille = grille.Copie();
@@ -123,7 +123,7 @@ public class AlgoAlphaBeta {
 			}
 			return valeurDeJeu;
 		} else {
-			double result = grille.poids(joueur);
+			int result = grille.poids(joueur);
 			//System.out.print("\n max result  "+ result);
 			return result;
 		}

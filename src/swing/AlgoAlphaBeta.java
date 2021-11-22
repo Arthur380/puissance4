@@ -48,8 +48,9 @@ public class AlgoAlphaBeta {
 				// profondeur 4 et pour L'IA son niveau)
 				int profondeurArbre = copieDeLaGrille.getTourDeQuelJoueur().getNiveau();
 
-				double valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, profondeurArbre);
-				System.out.print("\n Colonne ----------------" +valeurDeJeuCourante );
+
+				int valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, profondeurArbre);
+
 				if (valeurDeJeuCourante == valeurDeJeu) {
 					colAjouer = i;
 				} else if (valeurDeJeuCourante > valeurDeJeu) {
@@ -64,13 +65,13 @@ public class AlgoAlphaBeta {
 			}
 			
 		}
-	
+		System.out.print("\n Colonne ----------------" +poidsColonne.toString() );
 		grille.setPoidsColonnes(poidsColonne);
 		return colAjouer;
 	}
 
 // algo min de alpha beta, ici on applique la valeur min
-	private double min(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
+	private int min(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
 	//	System.out.print("\n min  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
 		if (occurence > 0) {
 			double valeurDeJeu = MAX;
@@ -91,17 +92,19 @@ public class AlgoAlphaBeta {
 			}
 			return valeurDeJeu;
 		} else {
-			double result = grille.poids(joueur);
-		//	System.out.print("\n min result  "+ result);
+
+			int result = grille.poids(joueur);
+			System.out.print("\n min result  "+ result);
+
 			return result;
 		}
 	}
 
 	// algo max de alpha beta, ici on applique la valeur max
-	private double max(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
+	private int max(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
 	//	System.out.print("\n max  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
 		if (occurence > 0) {
-			double valeurDeJeu = MIN;
+			int valeurDeJeu = MIN;
 			for (int i = 0; i < grille.LARGEUR; i++) {
 				if (!grille.colPleine(i)) {
 					// init des variables

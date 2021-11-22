@@ -14,7 +14,7 @@ public class Grille extends Object implements Cloneable {
 	public static final char CHAR_NULL = '.';
 	private char tabJeu[][];
 	private int nombreDeTour = 0;
-	private int poidsColonnes[];
+	private int poidsColonnes[] = new int[Grille.LARGEUR];
 
 	public int[] getPoidsColonnes() {
 		return poidsColonnes;
@@ -208,27 +208,6 @@ public class Grille extends Object implements Cloneable {
 			SymboleOpposant  =this.getTourDeQuelJoueur().getSymbole();
 		}
 	
-
-	/*	for (int i = 0; i < LARGEUR; i++) {
-			for (int j = this.dernierSymbole(i); j < LONGUEUR; j--) {
-				// poids =
-				// this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j);
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneGauche,descendreLigne) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneDroite,descendreLigne) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, Stable,descendreLigne) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneDroite,	Stable) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-			}
-		} */
-	
-
 		// on fait le poids pour le joueur actuel
 		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = this.dernierSymbole(i); j < LONGUEUR; j++) {
@@ -333,7 +312,7 @@ public class Grille extends Object implements Cloneable {
 		}   catch(NullPointerException e)
         {
             System.out.print("NullPointerException caught");
-        }
+        } 
 
 	
 			
@@ -462,14 +441,15 @@ public class Grille extends Object implements Cloneable {
 		grille.afficheGrille();
 		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
 		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
-
+		
 		grille.insere(4, JoueurActuel.getSymbole());
 		grille.insere(4, JoueurActuel.getSymbole());
+		System.out.print("\n poids important  "+joueurA.getNom()+" " + grille.poids(joueurA));	
 		grille.insere(4, JoueurActuel.getSymbole());
 		grille.insere(4, JoueurActuel.getSymbole());
 		grille.insere(1, JoueurActuel.getSymbole());
 		grille.afficheGrille();
-		System.out.print("\n poids  "+joueurA.getNom()+" " + grille.poids(joueurA));		
+		System.out.print("\n poids  "+joueurA.getNom()+" " +joueurA.placerChar(grille));		
 		System.out.print("\n poids  " +joueurB.getNom()+" " + grille.poids(joueurB));	
 		System.out.println("\n"+ (System.currentTimeMillis()-debut));
 		Grille g2 = (Grille) grille.clone();

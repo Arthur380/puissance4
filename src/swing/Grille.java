@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import javax.swing.JTable;
 
-
 public class Grille extends Object implements Cloneable {
 	// de gauche a droite
 	public static final int LARGEUR = 7;
@@ -15,14 +14,13 @@ public class Grille extends Object implements Cloneable {
 	public static final char CHAR_NULL = '.';
 	private char tabJeu[][];
 	private int nombreDeTour = 0;
-
 	private int poidsColonnes[] = new int[Grille.LARGEUR];
 
-	public double[] getPoidsColonnes() {
+	public int[] getPoidsColonnes() {
 		return poidsColonnes;
 	}
 
-	public void setPoidsColonnes(double[] poidsColonnes) {
+	public void setPoidsColonnes(int[] poidsColonnes) {
 		this.poidsColonnes = poidsColonnes;
 	}
 
@@ -69,7 +67,7 @@ public class Grille extends Object implements Cloneable {
 		this.tabJeu = tabJeu;
 	}
 
-	// Initialise la grille ï¿½ vide
+	// Initialise la grille à vide
 
 	public Grille() {
 		this.tabJeu = new char[LARGEUR][LONGUEUR];
@@ -86,7 +84,7 @@ public class Grille extends Object implements Cloneable {
 		if (colPleine(i)) {
 			System.out.println("Colonne " + i + "est pleine");
 		} else {
-			// on prends la dernioere valeur jouï¿½ sur cette colonne
+			// on prends la dernioere valeur joué sur cette colonne
 			int j = this.dernierSymbole(i);
 
 			this.tabJeu[i][j] = symbole;
@@ -145,7 +143,7 @@ public class Grille extends Object implements Cloneable {
 
 	public int dernierSymbole(int i) {
 
-		// on verifie que on a pas dï¿½jï¿½ rempli la colonne
+		// on verifie que on a pas déjà rempli la colonne
 		if (colPleine(i)) {
 
 			return -1;
@@ -188,12 +186,12 @@ public class Grille extends Object implements Cloneable {
 	}
 
 	// pour calculer le poids nous allons parcourir le tableau de la grille actuel
-	// de plusieurs maniï¿½re en evitant de dupliquer les comptes
+	// de plusieurs maniére en evitant de dupliquer les comptes
 	// de haut en bas pour chaque case on fait 4 test
 	// horizontal vers la droite =>
 	// diagonale bas droite et diagonale bas gauche
 	// vertical vers le bas
-	// on a un dernierSymbole qui retourne la derniï¿½religne jouï¿½ sur cette colonne (
+	// on a un dernierSymbole qui retourne la derniéreligne joué sur cette colonne (
 	// la plus haute)
 	public int poids(JoueurAbstrait joueur ) {
 		int poids = 0, poidsAlignement = 0;
@@ -210,54 +208,32 @@ public class Grille extends Object implements Cloneable {
 			SymboleOpposant  =this.getTourDeQuelJoueur().getSymbole();
 		}
 	
-
-	/*	for (int i = 0; i < LARGEUR; i++) {
-			for (int j = this.dernierSymbole(i); j < LONGUEUR; j--) {
-				// poids =
-				// this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j);
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneGauche,descendreLigne) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneDroite,descendreLigne) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, Stable,descendreLigne) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneDroite,	Stable) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-			}
-		} */
-	
-
-
 		// on fait le poids pour le joueur actuel
 		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = this.dernierSymbole(i); j < LONGUEUR; j++) {
 				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneGauche, descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MIN ) {
+				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
 					return poidsAlignement;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
 				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MIN ) {
+				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
 					return poidsAlignement;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
 				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j, Stable,descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MIN ) {
+				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
 					return poidsAlignement;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
 				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, Stable);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MIN ) {
+				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
 					return poidsAlignement;
 				} else {
 					poids += poidsAlignement;
@@ -270,7 +246,7 @@ public class Grille extends Object implements Cloneable {
 	}
 
 	// Nous allons parcourir la grille en se deplacant via deplacementLargeur
-	// deplacementLongueur en incrementant automatiquement les valeur par elle mï¿½me
+	// deplacementLongueur en incrementant automatiquement les valeur par elle même
 	public int parcoursResultatGrille(char symboleJoueur, char symboleJoueurOpposant ,  int colonneDepart, int lignerDepart, int deplacementColonne,
 			int deplacementLigne) {
 		int valeurColonne, colonne = colonneDepart, ligne = lignerDepart;
@@ -317,8 +293,6 @@ public class Grille extends Object implements Cloneable {
 	 
 		return poidsColonne;
 	}
-	
-	
 
 	public void afficheGrille() {
 		System.out.println();
@@ -330,19 +304,18 @@ public class Grille extends Object implements Cloneable {
 			System.out.print('|');
 			System.out.println();
 		}
-
-
 		try {
 			for (int x = 0; x < poidsColonnes.length; x++) {
 				System.out.print(" " + poidsColonnes[x] + " ");
 				
 			}
-		}   catch(ArrayIndexOutOfBoundsException e)
+		}   catch(NullPointerException e)
         {
             System.out.print("NullPointerException caught");
+        } 
 
-        }			
-
+	
+			
 	}
 
 	public boolean chercheAlignement4(int rang, char symbole) {
@@ -464,10 +437,8 @@ public class Grille extends Object implements Cloneable {
 		joueurB.setNom("Joueur 2 ");
 		grille.setJoueur1(joueurA);
 		grille.setJoueur2(joueurB);
+
 		grille.afficheGrille();
-		joueurA.placerChar(grille);
-/*
-	
 		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
 		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
 		
@@ -482,18 +453,18 @@ public class Grille extends Object implements Cloneable {
 		System.out.print("\n poids  " +joueurB.getNom()+" " + grille.poids(joueurB));	
 		System.out.println("\n"+ (System.currentTimeMillis()-debut));
 		Grille g2 = (Grille) grille.clone();
-		System.out.print("\n grille aprï¿½s creation G2  " );
+		System.out.print("\n grille aprés creation G2  " );
 		grille.afficheGrille();
 		g2.insere(1, JoueurActuel.getSymbole());
-		System.out.print("\n grille aprï¿½s insertion G2  " );
+		System.out.print("\n grille aprés insertion G2  " );
 		grille.afficheGrille();
-		System.out.print("\n G2 aprï¿½s insertion G2  " );
+		System.out.print("\n G2 aprés insertion G2  " );
 		g2.afficheGrille();
 		Grille g3 = g2.Copie();
 		g2.insere(1, JoueurActuel.getSymbole());
-		System.out.print("\n g3 aprï¿½s insertion G2  " );
+		System.out.print("\n g3 aprés insertion G2  " );
 		g3.afficheGrille();
-		g2.afficheGrille();*/
+		g2.afficheGrille();
 	}
 
 }

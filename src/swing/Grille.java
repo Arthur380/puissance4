@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import javax.swing.JTable;
 
+
 public class Grille extends Object implements Cloneable {
 	// de gauche a droite
 	public static final int LARGEUR = 7;
@@ -14,13 +15,13 @@ public class Grille extends Object implements Cloneable {
 	public static final char CHAR_NULL = '.';
 	private char tabJeu[][];
 	private int nombreDeTour = 0;
-	private int poidsColonnes[];
+	private double poidsColonnes[] = new double[this.LARGEUR];
 
-	public int[] getPoidsColonnes() {
+	public double[] getPoidsColonnes() {
 		return poidsColonnes;
 	}
 
-	public void setPoidsColonnes(int[] poidsColonnes) {
+	public void setPoidsColonnes(double[] poidsColonnes) {
 		this.poidsColonnes = poidsColonnes;
 	}
 
@@ -193,127 +194,113 @@ public class Grille extends Object implements Cloneable {
 	// vertical vers le bas
 	// on a un dernierSymbole qui retourne la derniéreligne joué sur cette colonne (
 	// la plus haute)
-	public int poids(JoueurAbstrait joueur ) {
-		int poids = 0, poidsAlignement = 0;
-		int descendreLigne = 1, colonneGauche = -1, colonneDroite = 1, Stable = 0;
-		// d'abord on regarde si l'adversaire gagne c'est un min si il gagne( on inverse
-		// donc le resultat
-	
-		char SymboleACalculer, SymboleOpposant;
-		SymboleACalculer = joueur.getSymbole();
-		if (this.getTourJoueurSuivant().getSymbole()!=SymboleACalculer ) {
-			SymboleOpposant  =this.getTourJoueurSuivant().getSymbole();
-		}else
-		{
-			SymboleOpposant  =this.getTourDeQuelJoueur().getSymbole();
+	public double poids(  JoueurAbstrait joueur) {
+
+		if(this.PChercheAlignementDeJeton(CONDITION_VICTOIRE, this.getTourJoueurSuivant().getSymbole())){
+			return AlgoAlphaBeta.MIN;
 		}
-	
 
-	/*	for (int i = 0; i < LARGEUR; i++) {
-			for (int j = this.dernierSymbole(i); j < LONGUEUR; j--) {
-				// poids =
-				// this.parcoursResultatGrille(this.getTourJoueurSuivant().getSymbole(),i,j);
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneGauche,descendreLigne) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneDroite,descendreLigne) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, Stable,descendreLigne) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-				if (this.parcoursResultatGrille(SymboleACalculer, i, j, colonneDroite,	Stable) == AlgoAlphaBeta.MAX) {
-					return AlgoAlphaBeta.MIN;
-				}
-			}
-		} */
-	
-
-		// on fait le poids pour le joueur actuel
-		for (int i = 0; i < LARGEUR; i++) {
-			for (int j = this.dernierSymbole(i); j < LONGUEUR; j++) {
-				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneGauche, descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
-					return poidsAlignement;
-				} else {
-					poids += poidsAlignement;
-					poidsAlignement = 0;
-				}
-				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
-					return poidsAlignement;
-				} else {
-					poids += poidsAlignement;
-					poidsAlignement = 0;
-				}
-				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j, Stable,descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
-					return poidsAlignement;
-				} else {
-					poids += poidsAlignement;
-					poidsAlignement = 0;
-				}
-				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, Stable);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
-					return poidsAlignement;
-				} else {
-					poids += poidsAlignement;
-					poidsAlignement = 0;
-				}
+		if(this.PChercheAlignementDeJeton( CONDITION_VICTOIRE, this.getTourDeQuelJoueur().getSymbole())){
+			return AlgoAlphaBeta.MAX;
+		}
+		
+		char  couleur = joueur.getSymbole();
+		double resultat = 0;
+		
+		for(int i = 1; i <= Grille.LARGEUR; i++){
+			for(int j = 1; j <= Grille.LONGUEUR; j++){
+				resultat +=this.parcoursResultatGrille(this, CONDITION_VICTOIRE, couleur, i, j,0, 1) ;
+				resultat +=this.parcoursResultatGrille(this, CONDITION_VICTOIRE, couleur, i, j, 1, 1) ;
+				resultat +=this.parcoursResultatGrille(this, CONDITION_VICTOIRE, couleur, i, j, 1, 0) ;
+				resultat +=this.parcoursResultatGrille(this, CONDITION_VICTOIRE, couleur, i, j, 1, -1) ;
+				resultat +=this.parcoursResultatGrille(this, CONDITION_VICTOIRE, couleur, i, j, 0, -1) ;
+				resultat +=this.parcoursResultatGrille(this, CONDITION_VICTOIRE, couleur, i, j, -1, -1) ;
+				resultat +=this.parcoursResultatGrille(this, CONDITION_VICTOIRE, couleur, i, j, -1, 0) ; 
+				resultat +=this.parcoursResultatGrille(this, CONDITION_VICTOIRE, couleur, i, j,-1, 1) ;
+				
 			}
 		}
-		return poids;
 
+		return resultat;
 	}
-
-	// Nous allons parcourir la grille en se deplacant via deplacementLargeur
-	// deplacementLongueur en incrementant automatiquement les valeur par elle même
-	public int parcoursResultatGrille(char symboleJoueur, char symboleJoueurOpposant ,  int colonneDepart, int lignerDepart, int deplacementColonne,
-			int deplacementLigne) {
-		int valeurColonne, colonne = colonneDepart, ligne = lignerDepart;
-		int boucleMax = 0, poidsColonne = 0;
-		boolean boucler = true;
-		// la longeur = ligne
-		// la largeur = colonne
-		//
-	//	System.out.println("PASSAGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE " +colonneDepart +" " +lignerDepart);
-		while ((ligne < this.LONGUEUR && ligne >= 0) && (colonne < this.LARGEUR && colonne >= 0)
-				&& boucleMax <= this.CONDITION_VICTOIRE && boucler) {
-							
-		//	System.out.println("ligne/colonne "+ligne+"/"+colonne+ " Valtab "+this.tabJeu[colonne][ligne]);
-			if (this.tabJeu[colonne][ligne] == symboleJoueur && poidsColonne >=0) {
-
-				poidsColonne += 1;
-				boucleMax++;
-	//			System.out.println("symbole "+ symboleJoueur+" symboleopp "+ symboleJoueurOpposant +" poidsColonne "+ poidsColonne);
-			} else if(this.tabJeu[colonne][ligne] == symboleJoueurOpposant  && poidsColonne < 1) { // on calcul si l'adversaire gagne
 	
-				poidsColonne += -1;		
-				boucleMax++;
-			
+	
+	private double parcoursResultatGrille(Grille grille, int tailleAlignement, char symboleJoueur, int i , int j, int declinaisonHorizontale, int declinaisonVerticale)										
+	{
+		double resultat = 1;
+		while(tailleAlignement != 0 && resultat != 0){
+			// On cherche l'alignement de la taille demandé
+			char jeton = ' ';
+			try {
+				// On récupère le jeton correspondant à i j pour vérifier sa couleur
+				jeton = this.tabJeu[i][j];
+			} catch (ArrayIndexOutOfBoundsException  e) {
+				// L'alignement n'existe pas puisqu'on est hors grille
+				resultat = 0;
 			}
-			else if(this.tabJeu[colonne][ligne] == symboleJoueurOpposant) { // Sa signifie qu'on ne peux aps gagner ca run jeton adversaire bloque
-				poidsColonne = 0;
-				boucler = false;
-			}else {
-				boucler = false;
+			// On teste la couleur du jeton
+			if(jeton==' ') {
+				resultat *= 0.5;
+			}else if( jeton == symboleJoueur){
+				resultat *= 1.0;
+			}else{
+				resultat *= 0;
 			}
-			// on continue le deplacement !
-			colonne += deplacementColonne;
-			ligne += deplacementLigne;
-			
+			// On cherche sur la prochaine et on réduit le nombre de cases à chercher et donc l'alignement
+			i+=declinaisonHorizontale;
+			j+=declinaisonVerticale;
+			tailleAlignement--;
 		}
-		// c'est qu'on a les conditions de victoire
-	 if (poidsColonne == this.CONDITION_VICTOIRE) {
-		return AlgoAlphaBeta.MAX;			
-		}else if(poidsColonne == -this.CONDITION_VICTOIRE) {
-			return AlgoAlphaBeta.MIN;			
-		}else if( poidsColonne <0) {
-			poidsColonne = 0;
-		}
-	 
-		return poidsColonne;
+		return resultat;
 	}
+	
+    public boolean chercheAlignementDeJeton(int tailleAlignement, char couleur, int i , int j, int declinaisonHorizontale, int declinaisonVerticale){
+        boolean alignementPreserve = true;
+        while(tailleAlignement != 0 && alignementPreserve){
+            // On cherche l'alignement de la taille demandé
+        	char jeton =  ' ';
+            try {
+                // On récupère le jeton correspondant à i j pour vérifier sa couleur
+                jeton = this.tabJeu[i][j];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                // L'alignement n'existe pas puisqu'on est hors grille
+                alignementPreserve = false;
+            }
+            // On teste la couleur du jeton, si il n'est pas de la bonne couleur alors l'alignement n'est pas préservé et on quite la boucle
+            if(jeton==' ' || !(couleur ==jeton)){
+                alignementPreserve = false;
+            }
+            // On cherche sur la prochaine et on réduit le nombre de cases à chercher et donc l'alignement
+            i+=declinaisonHorizontale;
+            j+=declinaisonVerticale;
+            tailleAlignement--;
+        }
+        return alignementPreserve;
+    }
+    
+    
+	public boolean PChercheAlignementDeJeton(int tailleAlignement, char couleur){
+		
+		boolean alignementTrouve = false;
+		
+		// On fait une recherche horizontale sur toute les cases possibles
+		for(int j = 1; j <= LARGEUR && !alignementTrouve; j++){
+			for (int i = 1; i <= LONGUEUR && !alignementTrouve; i++){
+				alignementTrouve = this.chercheAlignementDeJeton(tailleAlignement, couleur, i, j,0, 1) ||
+						this.chercheAlignementDeJeton(tailleAlignement, couleur, i, j, 1, 1) ||
+						this.chercheAlignementDeJeton(tailleAlignement, couleur, i, j, 1, 0) ||
+						this.chercheAlignementDeJeton(tailleAlignement, couleur, i, j, 1, -1) ||
+						this.chercheAlignementDeJeton(tailleAlignement, couleur, i, j, 0, -1) ||
+						this.chercheAlignementDeJeton(tailleAlignement, couleur, i, j, -1, -1) ||
+						this.chercheAlignementDeJeton(tailleAlignement, couleur, i, j, -1, 0) || 
+						this.chercheAlignementDeJeton(tailleAlignement, couleur, i, j,-1, 1);
+			}
+		}
+		
+		return alignementTrouve;
+	}	
+	
+
 
 	public void afficheGrille() {
 		System.out.println();
@@ -330,13 +317,10 @@ public class Grille extends Object implements Cloneable {
 				System.out.print(" " + poidsColonnes[x] + " ");
 				
 			}
-		}   catch(NullPointerException e)
+		}   catch(ArrayIndexOutOfBoundsException e)
         {
             System.out.print("NullPointerException caught");
-        }
-
-	
-			
+        }			
 	}
 
 	public boolean chercheAlignement4(int rang, char symbole) {
@@ -458,8 +442,10 @@ public class Grille extends Object implements Cloneable {
 		joueurB.setNom("Joueur 2 ");
 		grille.setJoueur1(joueurA);
 		grille.setJoueur2(joueurB);
-
 		grille.afficheGrille();
+		joueurA.placerChar(grille);
+/*
+	
 		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
 		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
 
@@ -484,7 +470,7 @@ public class Grille extends Object implements Cloneable {
 		g2.insere(1, JoueurActuel.getSymbole());
 		System.out.print("\n g3 aprés insertion G2  " );
 		g3.afficheGrille();
-		g2.afficheGrille();
+		g2.afficheGrille();*/
 	}
 
 }

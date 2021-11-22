@@ -31,7 +31,7 @@ public class AlgoAlphaBeta {
 		// ArrayList<Integer> colonnesJouables = grille.colonesJouables();
 		double valeurDeJeu = MIN;
 		int alphaMin = MIN, betaMax = MAX, colAjouer = 0;
-		int poidsColonne[] = new int[Grille.LARGEUR];
+		double poidsColonne[] = new double[Grille.LARGEUR];
 
 		// on va faire le le calcul pouur chaque colonne de la grille
 		for (int i = 0; i < Grille.LARGEUR; i++) {
@@ -48,7 +48,7 @@ public class AlgoAlphaBeta {
 				// profondeur 4 et pour L'IA son niveau)
 				int profondeurArbre = copieDeLaGrille.getTourDeQuelJoueur().getNiveau();
 
-				int valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, profondeurArbre);
+				double valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, profondeurArbre);
 				System.out.print("\n Colonne ----------------" +valeurDeJeuCourante );
 				if (valeurDeJeuCourante == valeurDeJeu) {
 					colAjouer = i;
@@ -70,10 +70,10 @@ public class AlgoAlphaBeta {
 	}
 
 // algo min de alpha beta, ici on applique la valeur min
-	private int min(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
+	private double min(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
 	//	System.out.print("\n min  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
 		if (occurence > 0) {
-			int valeurDeJeu = MAX;
+			double valeurDeJeu = MAX;
 			for (int i = 0; i < grille.LARGEUR; i++) {
 				if (!grille.colPleine(i)) {
 					Grille copieDeLaGrille = grille.Copie();
@@ -91,17 +91,17 @@ public class AlgoAlphaBeta {
 			}
 			return valeurDeJeu;
 		} else {
-			int result = grille.poids(joueur);
+			double result = grille.poids(joueur);
 		//	System.out.print("\n min result  "+ result);
 			return result;
 		}
 	}
 
 	// algo max de alpha beta, ici on applique la valeur max
-	private int max(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
+	private double max(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
 	//	System.out.print("\n max  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
 		if (occurence > 0) {
-			int valeurDeJeu = MIN;
+			double valeurDeJeu = MIN;
 			for (int i = 0; i < grille.LARGEUR; i++) {
 				if (!grille.colPleine(i)) {
 					// init des variables
@@ -120,7 +120,7 @@ public class AlgoAlphaBeta {
 			}
 			return valeurDeJeu;
 		} else {
-			int result = grille.poids(joueur);
+			double result = grille.poids(joueur);
 			//System.out.print("\n max result  "+ result);
 			return result;
 		}

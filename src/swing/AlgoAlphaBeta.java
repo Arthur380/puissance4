@@ -1,6 +1,7 @@
 package swing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 
@@ -31,7 +32,7 @@ public class AlgoAlphaBeta {
 		// ArrayList<Integer> colonnesJouables = grille.colonesJouables();
 		double valeurDeJeu = MIN;
 		int alphaMin = MIN, betaMax = MAX, colAjouer = 0;
-		double poidsColonne[] = new double[Grille.LARGEUR];
+		int poidsColonne[] = new int[Grille.LARGEUR];
 
 		// on va faire le le calcul pouur chaque colonne de la grille
 		for (int i = 0; i < Grille.LARGEUR; i++) {
@@ -59,19 +60,21 @@ public class AlgoAlphaBeta {
 				}
 				poidsColonne[i] = valeurDeJeuCourante;
 				
+				
 			} else {
 				poidsColonne[i] = alphaMin;
 						
 			}
 			
 		}
-		System.out.print("\n Colonne ----------------" +poidsColonne.toString() );
+		System.out.print("\n Colonne ----------------"+Arrays.toString(poidsColonne) );
+		
 		grille.setPoidsColonnes(poidsColonne);
 		return colAjouer;
 	}
 
 // algo min de alpha beta, ici on applique la valeur min
-	private int min(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
+	private int min(JoueurAbstrait joueur, Grille grille, int alpha, int beta, int occurence) {
 	//	System.out.print("\n min  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
 		if (occurence > 0) {
 			int valeurDeJeu = MAX;
@@ -94,14 +97,14 @@ public class AlgoAlphaBeta {
 		} else {
 
 			int result = grille.poids(joueur);
-			System.out.print("\n min result  "+ result);
+			//System.out.print("\n min result  "+ result);
 
 			return result;
 		}
 	}
 
 	// algo max de alpha beta, ici on applique la valeur max
-	private int max(JoueurAbstrait joueur, Grille grille, double alpha, double beta, int occurence) {
+	private int max(JoueurAbstrait joueur, Grille grille, int alpha, int beta, int occurence) {
 	//	System.out.print("\n max  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
 		if (occurence > 0) {
 			int valeurDeJeu = MIN;
@@ -134,22 +137,35 @@ public class AlgoAlphaBeta {
 	}
 
 	public static void main(String[] args) {
+		
 		long debut = System.currentTimeMillis();
 		boolean win = true;
 		Grille grille = new Grille();
 		JoueurAbstrait joueurA = new Humain('x', 4);
 		joueurA.setNom("Joueur 1 ");
 		JoueurAbstrait joueurB = new Ordinateur('O', 4);
+	
+			
 		joueurB.setNom("Joueur 2 ");
 		grille.setJoueur1(joueurA);
 		grille.setJoueur2(joueurB);
+		grille.afficheGrille();
+		System.out.print(" tour "+ grille.getNombreDeTour());
+	
+		int numeroColonneOuJouer =  joueurA.placerChar(grille) ;
+		System.out.print("\n numeroColonneOuJouer  "+numeroColonneOuJouer);
+
+		grille.insere(4, grille.getTourDeQuelJoueur().getSymbole());
+		grille.insere(4, grille.getTourDeQuelJoueur().getSymbole());
+		grille.insere(4, grille.getTourDeQuelJoueur().getSymbole());
+		grille.insere(4, grille.getTourDeQuelJoueur().getSymbole());
 		//grille.insere(1,joueurA.getSymbole());	
-		int numeroColonneOuJouer = joueurB.placerChar(grille);
+		
 		grille.afficheGrille();
-		System.out.print("\n numeroColonneOuJouer  "+  numeroColonneOuJouer);
-		grille.insere(numeroColonneOuJouer,joueurA.getSymbole());	
+		System.out.print("\n numeroColonneOuJouer  "+  numeroColonneOuJouer +" tour "+ grille.getNombreDeTour());
+	/*	grille.insere(numeroColonneOuJouer,joueurA.getSymbole());	
 		grille.afficheGrille();
-		System.out.println("\n"+ (System.currentTimeMillis()-debut));
+		System.out.println("\n"+ (System.currentTimeMillis()-debut));*/ 
 	/*	while (win) {
 		
 			grille.afficheGrille();

@@ -133,7 +133,7 @@ public class Grille extends Object implements Cloneable {
 		// System.out.print("\n Colpleine " + (this.tabJeu[i][LONGUEUR-1] != ' ')+" Col
 		// "+ i+" " +this.tabJeu[i][LONGUEUR-1]);
 
-		return !(this.tabJeu[i][0] == '.');
+		return !(this.tabJeu[i][0] == CHAR_NULL);
 	}
 
 	public boolean grillePleine(int i) {
@@ -212,29 +212,29 @@ public class Grille extends Object implements Cloneable {
 		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = this.dernierSymbole(i); j < LONGUEUR; j++) {
 				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneGauche, descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
-					return poidsAlignement;
+				if (poidsAlignement == CONDITION_VICTOIRE ) {
+					return AlgoAlphaBeta.MAX;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
 				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
-					return poidsAlignement;
+				if (poidsAlignement == CONDITION_VICTOIRE  ) {
+					return AlgoAlphaBeta.MAX;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
 				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j, Stable,descendreLigne);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
-					return poidsAlignement;
+				if (poidsAlignement == CONDITION_VICTOIRE ) {
+					return AlgoAlphaBeta.MAX;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
 				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, Stable);
-				if (poidsAlignement == AlgoAlphaBeta.MAX ||poidsAlignement == AlgoAlphaBeta.MAX ) {
-					return poidsAlignement;
+				if (poidsAlignement == AlgoAlphaBeta.MAX ) {
+					return AlgoAlphaBeta.MAX;
 				} else {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
@@ -252,45 +252,40 @@ public class Grille extends Object implements Cloneable {
 		int valeurColonne, colonne = colonneDepart, ligne = lignerDepart;
 		int boucleMax = 0, poidsColonne = 0;
 		boolean boucler = true;
+		int tourDeBoucleMax = 0;
 		// la longeur = ligne
 		// la largeur = colonne
 		//
 	//	System.out.println("PASSAGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE " +colonneDepart +" " +lignerDepart);
-		while ((ligne < this.LONGUEUR && ligne >= 0) && (colonne < this.LARGEUR && colonne >= 0)
-				&& boucleMax <= this.CONDITION_VICTOIRE && boucler) {
-							
-		//	System.out.println("ligne/colonne "+ligne+"/"+colonne+ " Valtab "+this.tabJeu[colonne][ligne]);
-			if (this.tabJeu[colonne][ligne] == symboleJoueur && poidsColonne >=0) {
+		while (boucler && tourDeBoucleMax<CONDITION_VICTOIRE) {
+			try {
+				if (this.tabJeu[colonne][ligne] == symboleJoueur) {
+					poidsColonne += 2;
+				}else if(this.tabJeu[colonne][ligne] == CHAR_NULL) {
+					poidsColonne -=1 ;
+					
+				}else {
+					poidsColonne = 0;
+					boucler = !boucler;
+				}
+			}
+			 catch(ArrayIndexOutOfBoundsException ex)
+		        {
+				// poidsColonne = 0;
+				 boucler = !boucler;					
+		        }  		
 
-				poidsColonne += 1;
-				boucleMax++;
-	//			System.out.println("symbole "+ symboleJoueur+" symboleopp "+ symboleJoueurOpposant +" poidsColonne "+ poidsColonne);
-			} else if(this.tabJeu[colonne][ligne] == symboleJoueurOpposant  && poidsColonne < 1) { // on calcul si l'adversaire gagne
-	
-				poidsColonne += -1;		
-				boucleMax++;
-			
-			}
-			else if(this.tabJeu[colonne][ligne] == symboleJoueurOpposant) { // Sa signifie qu'on ne peux aps gagner ca run jeton adversaire bloque
-				poidsColonne = 0;
-				boucler = false;
-			}else {
-				boucler = false;
-			}
 			// on continue le deplacement !
 			colonne += deplacementColonne;
 			ligne += deplacementLigne;
+			tourDeBoucleMax++;
 			
 		}
-		// c'est qu'on a les conditions de victoire
-	 if (poidsColonne == this.CONDITION_VICTOIRE) {
-		return AlgoAlphaBeta.MAX;			
-		}else if(poidsColonne == -this.CONDITION_VICTOIRE) {
-			return AlgoAlphaBeta.MIN;			
-		}else if( poidsColonne <0) {
+		if (poidsColonne< 0) {
 			poidsColonne = 0;
+		//	this.afficheGrille();
+		//System.out.println("poidsColonne " +poidsColonne);
 		}
-	 
 		return poidsColonne;
 	}
 
@@ -309,9 +304,9 @@ public class Grille extends Object implements Cloneable {
 				System.out.print(" " + poidsColonnes[x] + " ");
 				
 			}
-		}   catch(NullPointerException e)
+		}   catch(Exception ex)
         {
-            System.out.print("NullPointerException caught");
+			 ex.printStackTrace();
         } 
 
 	
@@ -441,7 +436,16 @@ public class Grille extends Object implements Cloneable {
 		grille.afficheGrille();
 		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
 		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
-		
+		//grille.insere(3, JoueurActuel.getSymbole());
+
+		System.out.print("\n " +JoueurActuel.placerChar(grille));
+		System.out.print("\n poids  "+JoueurActuel.getNom()+" sym "+ JoueurSuivant.getSymbole());
+		grille.afficheGrille();
+		/*
+		grille.afficheGrille();
+		System.out.print("\n poids  "+JoueurSuivant.getNom());
+		System.out.print("\n " +JoueurSuivant.placerChar(grille));/*	
+		grille.afficheGrille();
 		grille.insere(4, JoueurActuel.getSymbole());
 		grille.insere(4, JoueurActuel.getSymbole());
 		System.out.print("\n poids important  "+joueurA.getNom()+" " + grille.poids(joueurA));	
@@ -464,7 +468,7 @@ public class Grille extends Object implements Cloneable {
 		g2.insere(1, JoueurActuel.getSymbole());
 		System.out.print("\n g3 aprés insertion G2  " );
 		g3.afficheGrille();
-		g2.afficheGrille();
+		g2.afficheGrille();*/
 	}
 
 }

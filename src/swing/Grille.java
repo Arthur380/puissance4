@@ -195,7 +195,7 @@ public class Grille extends Object implements Cloneable {
 	// la plus haute)
 	public int poids(JoueurAbstrait joueur ) {
 		int poids = 0, poidsAlignement = 0;
-		int descendreLigne = 1, colonneGauche = -1, colonneDroite = 1, Stable = 0;
+		int descendreLigne = 1, colonneGauche = -1, colonneDroite = 1, Stable = 0,monterLigne = 1;
 		// d'abord on regarde si l'adversaire gagne c'est un min si il gagne( on inverse
 		// donc le resultat
 	
@@ -239,6 +239,27 @@ public class Grille extends Object implements Cloneable {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
+				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneGauche, Stable);
+				if (poidsAlignement == AlgoAlphaBeta.MAX ) {
+					return AlgoAlphaBeta.MAX;
+				} else {
+					poids += poidsAlignement;
+					poidsAlignement = 0;
+				}
+				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneGauche, monterLigne);
+				if (poidsAlignement == CONDITION_VICTOIRE ) {
+					return AlgoAlphaBeta.MAX;
+				} else {
+					poids += poidsAlignement;
+					poidsAlignement = 0;
+				}
+				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, monterLigne);
+				if (poidsAlignement == CONDITION_VICTOIRE  ) {
+					return AlgoAlphaBeta.MAX;
+				} else {
+					poids += poidsAlignement;
+					poidsAlignement = 0;
+				}
 			}
 		}
 		return poids;
@@ -250,17 +271,18 @@ public class Grille extends Object implements Cloneable {
 	public int parcoursResultatGrille(char symboleJoueur, char symboleJoueurOpposant ,  int colonneDepart, int lignerDepart, int deplacementColonne,
 			int deplacementLigne) {
 		int valeurColonne, colonne = colonneDepart, ligne = lignerDepart;
-		int boucleMax = 0, poidsColonne = 0;
+		int boucleMax = 0, poidsColonne = 4;
 		boolean boucler = true;
 		int tourDeBoucleMax = 0;
 		// la longeur = ligne
 		// la largeur = colonne
 		//
 	//	System.out.println("PASSAGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE " +colonneDepart +" " +lignerDepart);
-		while (boucler && tourDeBoucleMax<CONDITION_VICTOIRE) {
-			try {
+		while (boucler && tourDeBoucleMax<CONDITION_VICTOIRE ) {
+			try {		
+			
 				if (this.tabJeu[colonne][ligne] == symboleJoueur) {
-					poidsColonne += 2;
+					//poidsColonne += 2;
 				}else if(this.tabJeu[colonne][ligne] == CHAR_NULL) {
 					poidsColonne -=1 ;
 					
@@ -269,11 +291,10 @@ public class Grille extends Object implements Cloneable {
 					boucler = !boucler;
 				}
 			}
-			 catch(ArrayIndexOutOfBoundsException ex)
-		        {
-				// poidsColonne = 0;
-				 boucler = !boucler;					
-		        }  		
+			
+		 catch(ArrayIndexOutOfBoundsException ex) {
+			 poidsColonne = 0;
+			 boucler = false; }  		
 
 			// on continue le deplacement !
 			colonne += deplacementColonne;
@@ -286,6 +307,7 @@ public class Grille extends Object implements Cloneable {
 		//	this.afficheGrille();
 		//System.out.println("poidsColonne " +poidsColonne);
 		}
+	
 		return poidsColonne;
 	}
 

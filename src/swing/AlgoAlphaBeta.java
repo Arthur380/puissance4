@@ -33,7 +33,7 @@ public class AlgoAlphaBeta {
 		double valeurDeJeu = MIN;
 		int alphaMin = MIN, betaMax = MAX, colAjouer = 0;
 		int poidsColonne[] = new int[Grille.LARGEUR];
-
+		int profondeurArbre = grille.getTourDeQuelJoueur().getNiveau();
 		// on va faire le le calcul pouur chaque colonne de la grille
 		for (int i = 0; i < Grille.LARGEUR; i++) {
 			// on regarde si la col est pleine si c'est plein pas besoin de copier la grille
@@ -44,12 +44,12 @@ public class AlgoAlphaBeta {
 				// copie de la grille (grille courante a la boucle for)
 				Grille copieDeLaGrille = grille.Copie();
 				
-				copieDeLaGrille.insere(i, joueur.getSymbole());
+				
 				// on recupére la profondeur de l'arbre qu'on va gen (pour l'humain l'aide de
 				// profondeur 4 et pour L'IA son niveau)
-				int profondeurArbre = copieDeLaGrille.getTourDeQuelJoueur().getNiveau();
-
-
+				
+				copieDeLaGrille.insere(i, joueur.getSymbole());
+				System.out.print("\n profondeurArbre    ----------------"+profondeurArbre );
 				int valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, profondeurArbre);
 
 				if (valeurDeJeuCourante == valeurDeJeu) {
@@ -59,11 +59,10 @@ public class AlgoAlphaBeta {
 					colAjouer = i;
 				}
 				poidsColonne[i] = valeurDeJeuCourante;
-				
-				
+								
 			} else {
-				poidsColonne[i] = alphaMin;
-						
+				System.out.print("\n outofbound  colonne  ----------------"  );
+				poidsColonne[i] = alphaMin;						
 			}
 			
 		}
@@ -76,19 +75,22 @@ public class AlgoAlphaBeta {
 // algo min de alpha beta, ici on applique la valeur min
 	private int min(JoueurAbstrait joueur, Grille grille, int alpha, int beta, int occurence) {
 	//	System.out.print("\n min  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
+
 		if (occurence > 0) {
+			System.out.print("\n occurence  "+ occurence);
 			int valeurDeJeu = MAX;
 			for (int i = 0; i < grille.LARGEUR; i++) {
 				if (!grille.colPleine(i)) {
 					Grille copieDeLaGrille = grille.Copie();
-					occurence--;
+					//occurence--;
 					copieDeLaGrille.insere(i, copieDeLaGrille.getTourDeQuelJoueur().getSymbole());
 
-					valeurDeJeu = Math.min(valeurDeJeu, this.max(joueur, copieDeLaGrille, alpha, beta, occurence));
+					valeurDeJeu = Math.min(valeurDeJeu, this.max(joueur, copieDeLaGrille, alpha, beta, occurence-1));
 					// doit on tronquer la branche ?
-					if (alpha >= valeurDeJeu) {
+					if (valeurDeJeu >= alpha ) {
 						// ici on tronque la branche on ira donc pas plus loin dans min
-						return valeurDeJeu;
+						break;
+						//return valeurDeJeu;
 					}
 					beta = Math.min(beta, valeurDeJeu);
 				}
@@ -106,20 +108,23 @@ public class AlgoAlphaBeta {
 	// algo max de alpha beta, ici on applique la valeur max
 	private int max(JoueurAbstrait joueur, Grille grille, int alpha, int beta, int occurence) {
 	//	System.out.print("\n max  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
+ 
 		if (occurence > 0) {
+			System.out.print("\n max occurence  "+ occurence);
 			int valeurDeJeu = MIN;
 			for (int i = 0; i < grille.LARGEUR; i++) {
 				if (!grille.colPleine(i)) {
 					// init des variables
 					Grille copieDeLaGrille = grille.Copie();
-					occurence--;
+					
 					// copie insersion dans les grilles
 					copieDeLaGrille.insere(i, copieDeLaGrille.getTourDeQuelJoueur().getSymbole());
-					valeurDeJeu = Math.max(valeurDeJeu, this.min(joueur, copieDeLaGrille, alpha, beta, occurence));
-					// doit on tronquer la branche ?
+					valeurDeJeu = Math.max(valeurDeJeu, this.min(joueur, copieDeLaGrille, alpha, beta, occurence-1));
+					// doit on tronquer la branche ?o
 					if (valeurDeJeu >= beta) {
 						// ici on tronque la branche on ira donc pas plus loin dans max
-						return valeurDeJeu;
+						break;
+					//	return valeurDeJeu;
 					}
 					alpha = Math.max(alpha, valeurDeJeu);
 				}
@@ -127,6 +132,7 @@ public class AlgoAlphaBeta {
 			return valeurDeJeu;
 		} else {
 			int result = grille.poids(joueur);
+			grille.afficheGrille();
 			//System.out.print("\n max result  "+ result);
 			return result;
 		}

@@ -58,7 +58,10 @@ public class AlgoAlphaBeta {
 					valeurDeJeu = valeurDeJeuCourante;
 					colAjouer = i;
 				}
-				poidsColonne[i] = valeurDeJeuCourante;
+				//poidsColonne[i] = valeurDeJeuCourante;
+				int num = i;
+				int verif = grille.poids(joueur, i);
+				poidsColonne[i] = grille.poids(joueur, i);
 								
 			} else {
 				System.out.print("\n outofbound  colonne  ----------------"  );
@@ -66,9 +69,11 @@ public class AlgoAlphaBeta {
 			}
 			
 		}
+		
 		System.out.print("\n Colonne ----------------"+Arrays.toString(poidsColonne) );
 		
 		grille.setPoidsColonnes(poidsColonne);
+		grille.afficheGrille();
 		return colAjouer;
 	}
 
@@ -96,15 +101,9 @@ public class AlgoAlphaBeta {
 				}
 			}
 			return valeurDeJeu;
-		} else {
-
-			int result = grille.poids(joueur);
-			//System.out.print("\n min result  "+ result);
-
-			return result;
 		}
+		return 0;
 	}
-
 	// algo max de alpha beta, ici on applique la valeur max
 	private int max(JoueurAbstrait joueur, Grille grille, int alpha, int beta, int occurence) {
 	//	System.out.print("\n max  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
@@ -130,12 +129,8 @@ public class AlgoAlphaBeta {
 				}
 			}
 			return valeurDeJeu;
-		} else {
-			int result = grille.poids(joueur);
-			grille.afficheGrille();
-			//System.out.print("\n max result  "+ result);
-			return result;
 		}
+		return 0;
 	}
 
 	public int appellealphaBetaNega(Grille grilleACalculer) {
@@ -144,7 +139,7 @@ public class AlgoAlphaBeta {
 
 	public static void main(String[] args) {
 		
-		long debut = System.currentTimeMillis();
+		/*long debut = System.currentTimeMillis();
 		boolean win = true;
 		Grille grille = new Grille();
 		JoueurAbstrait joueurA = new Humain('x', 4);

@@ -12,10 +12,18 @@ public abstract class JoueurAbstrait {
 
 	private String nom;
 
-	private int niveau;
+	private int niveau=5;
 
 	public int getNiveau() {
-		return niveau;
+		String nomJoueur = this.getNom();
+		if(nomJoueur =="Humain")
+		{
+			return 4;
+		}
+		else
+		{
+			return 1;
+		}
 	}
 
 	public void setNiveau(int niveau) {

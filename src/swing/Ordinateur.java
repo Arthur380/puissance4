@@ -14,7 +14,7 @@ public class Ordinateur extends JoueurAbstrait {
 // on qui va servir a faire jouer L'IA ! =)
 	@Override
 	public int placerChar(Grille grille)  {
-		System.out.print("IA DEVRAIT JOUER = " + IA.ouJouer(this, grille) );
+		System.out.print("\n IA DEVRAIT JOUER = " + IA.ouJouer(this, grille) );
 		return IA.ouJouer(this, grille);
 	}
 

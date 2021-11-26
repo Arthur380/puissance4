@@ -255,7 +255,7 @@ public class Grille extends Object implements Cloneable {
 		// on fait le poids pour le joueur actuel
 		// on fait le poids pour le joueur actuel
 		for (int i = 0; i < LARGEUR; i++) {
-			for (int j = this.dernierSymbole(i); j < LONGUEUR; j++) {
+			for (int j =0; j < LONGUEUR; j++) {
 				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneGauche, descendreLigne);
 				if (poidsAlignement == CONDITION_VICTOIRE ) {
 					return AlgoAlphaBeta.MAX;
@@ -277,7 +277,7 @@ public class Grille extends Object implements Cloneable {
 					poids += poidsAlignement;
 					poidsAlignement = 0;
 				}
-				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneGauche, Stable);
+				poidsAlignement = this.parcoursResultatGrille(SymboleACalculer,SymboleOpposant, i, j,colonneDroite, Stable);
 				if (poidsAlignement == CONDITION_VICTOIRE ) {
 					return AlgoAlphaBeta.MAX;
 				} else {
@@ -314,7 +314,7 @@ public class Grille extends Object implements Cloneable {
 				} */
 			}
 		}
-		if(poids > 24) {System.out.print("\n max result  "+ poids);this.afficheGrille();}
+		//if(poids > 24) {System.out.print("\n max result  "+ poids);this.afficheGrille();}
 		return poids;
 	}
 
@@ -362,7 +362,17 @@ public class Grille extends Object implements Cloneable {
 	
 		return poidsColonne;
 	}
-
+	public void affichePoids() {
+		try {
+			for (int x = 0; x < poidsColonnes.length; x++) {
+				System.out.print(" " + poidsColonnes[x] + " ");
+				
+			}
+		}   catch(Exception ex)
+        {
+			 ex.printStackTrace();
+        } 
+	}
 	public void afficheGrille() {
 		System.out.println();
 		for (int y = 0; y < LONGUEUR; y++) {
@@ -373,130 +383,8 @@ public class Grille extends Object implements Cloneable {
 			System.out.print('|');
 			System.out.println();
 		}
-		try {
-			for (int x = 0; x < poidsColonnes.length; x++) {
-				System.out.print(" " + poidsColonnes[x] + " ");
-				
-			}
-		}   catch(Exception ex)
-        {
-			 ex.printStackTrace();
-        } 
+
 			
-	}
-
-	public boolean chercheAlignement4(int rang, char symbole) {
-
-		// pour les diagonales on part du point de jeu et on somme en descendant la plus
-		// longue chaine de symbole
-		// puis on repart du rang et on fait vers le haut
-		// diagonal NordOuest SudEst=> \
-		int x, y, somme;
-		String win = " ";
-
-		somme = -1;
-		int max = 0;
-		int C = LARGEUR, L = LONGUEUR;
-		x = rang;
-		y = L;
-		System.out.println("x " + x + " y" + y);
-		try {
-		while (y >= 0 && x >= 0 && tabJeu[x][y] == symbole && somme < CONDITION_VICTOIRE) {
-			System.out.println("x " + x + " y" + y);
-			y--;
-			x--;
-			somme++;
-		}
-		x = rang;
-		y = L;
-		while (y < L && x < C && tabJeu[x][y] == symbole && somme < CONDITION_VICTOIRE) {
-			System.out.println("x " + x + " y" + y);
-			y++;
-			x++;
-			somme++;
-		}
-		max = somme;
-		System.out.println("somme " + somme + " CONDITION_VICTOIRE " + CONDITION_VICTOIRE);
-		if (somme >= CONDITION_VICTOIRE)
-			win = "diagonal NordOuest SudEst=> \\ diagonal NordOuest SudEst=> \\";
-
-		// diagonale NordEST SudOuest => /
-		x = rang;
-		y = L;
-		somme = -1;
-
-		while (y >= 0 && x < C && tabJeu[x][y] == symbole && somme < CONDITION_VICTOIRE) {
-			System.out.println("x " + x + " y" + y);
-			y--;
-			x++;
-			somme++;
-		}
-		x = rang;
-		y = L;
-		while (y < L && x >= 0 && tabJeu[x][y] == symbole && somme < CONDITION_VICTOIRE) {
-			System.out.println("x " + x + " y" + y);
-			y++;
-			x--;
-			somme++;
-		}
-		if (somme > max)
-			max = somme;
-		System.out.println(
-				"Diagonale NordEST SudOuest => / somme " + somme + " CONDITION_VICTOIRE " + CONDITION_VICTOIRE);
-		if (somme >= CONDITION_VICTOIRE)
-			win = "Diagonale NordEST SudOuest => /";
-
-		// verticale => |
-		x = rang;
-		y = L;
-		somme = -1;
-		while (y >= 0 && tabJeu[x][y] == symbole && somme < CONDITION_VICTOIRE) {
-			System.out.println("x " + x + " y" + y);
-			y--;
-			somme++;
-		}
-		y = rang;
-		while (y < L && tabJeu[x][y] == symbole && somme < CONDITION_VICTOIRE) {
-			System.out.println("x " + x + " y" + y);
-			y++;
-			somme++;
-		}
-		if (somme > max)
-			max = somme;
-		System.out.println(" verticale => | somme " + somme + " CONDITION_VICTOIRE " + CONDITION_VICTOIRE);
-		if (somme >= CONDITION_VICTOIRE)
-			win = "verticale => |";
-
-		// horizontale => -
-		x = rang;
-		y = L;
-		somme = -1;
-		while (x >= 0 && tabJeu[x][y] == symbole && somme < CONDITION_VICTOIRE) {
-			x--;
-			somme++;
-		}
-		x = rang;
-		while (x < C && tabJeu[x][y] == symbole && somme < CONDITION_VICTOIRE) {
-			x++;
-			somme++;
-		}
-		if (somme > max)
-			max = somme;
-		System.out.println("horizontale => - somme " + somme + " CONDITION_VICTOIRE " + CONDITION_VICTOIRE);
-		if (max >= CONDITION_VICTOIRE)
-			win = "horizontale => -";
-
-		if (max >= CONDITION_VICTOIRE) {
-
-			System.out.println("****VICTOIRE DE " + symbole + "**** en " + win);
-			return true;
-		} else
-			System.out.println("****PAS VICTOIRE DE " + symbole + "**** en " + win);
-		return false;
-		} catch(ArrayIndexOutOfBoundsException ex) {
-	return false;
-		}
-
 	}
 
 	public static void main(String[] args) {
@@ -528,7 +416,7 @@ public class Grille extends Object implements Cloneable {
 			
 			colonneAJouer = JoueurActuel.placerChar(grille);
 			grille.insere(colonneAJouer,JoueurActuel.getSymbole());
-			if (grille.chercheAlignement4(colonneAJouer,JoueurActuel.getSymbole())) {
+			if (grille.VictoireAdversaire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
 				grille.afficheGrille();
 				gagner =true;
 				System.out.print("Bravo c'est gagné");

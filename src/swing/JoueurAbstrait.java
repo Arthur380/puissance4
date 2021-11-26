@@ -15,16 +15,16 @@ public abstract class JoueurAbstrait {
 	private int niveau;
 
 	public int getNiveau() {
-		return niveau;
+		return 4;
 	}
 
 	public void setNiveau(int niveau) {
-		this.niveau = niveau;
+		this.niveau = 4;
 	}
 
 	public JoueurAbstrait(char symbole, int lvl) {
 		this.symbole = symbole;
-		this.niveau = lvl;
+		this.niveau = 4;
 	}
 
 	public char getSymbole() {

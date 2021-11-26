@@ -18,8 +18,9 @@ public class Humain extends JoueurAbstrait {
 
 	@Override
 	public int placerChar(Grille grille) {
-		System.out.print("\nPetite aide " + aideHumain.ouJouer(this, grille)+"\n");
-		System.out.print("Où placer le prochain jeton? Donnez un numéro de colonne entre 1 et " + Grille.LARGEUR + " : ");
+		System.out.print("\n Petite aide " + (aideHumain.ouJouer(this, grille)+1)+"\n");
+		grille.affichePoids();
+		System.out.print("\\n Où placer le prochain jeton? Donnez un numéro de colonne entre 1 et " + Grille.LARGEUR + " : ");
 
 		Scanner sc = new Scanner(System.in);
 		int i = sc.nextInt()-1;
@@ -27,6 +28,6 @@ public class Humain extends JoueurAbstrait {
 		return i;
 	}
 
-
+//kk
 
 }

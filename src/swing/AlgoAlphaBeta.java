@@ -42,14 +42,14 @@ public class AlgoAlphaBeta {
 			if (!grille.colPleine(i) ) {
 			//	System.out.print("\n Colonne ----------------" + i );
 				// copie de la grille (grille courante a la boucle for)
-				Grille copieDeLaGrille = grille.Copie();
-				
+				Grille copieDeLaGrille = grille.Copie();				
 				
 				// on recupére la profondeur de l'arbre qu'on va gen (pour l'humain l'aide de
 				// profondeur 4 et pour L'IA son niveau)
 				
 				copieDeLaGrille.insere(i, joueur.getSymbole());
-				System.out.print("\n profondeurArbre    ----------------"+profondeurArbre );
+			//	System.out.print("\n base " +joueur.getSymbole());
+				
 				int valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, profondeurArbre);
 
 				if (valeurDeJeuCourante == valeurDeJeu) {
@@ -77,17 +77,18 @@ public class AlgoAlphaBeta {
 	//	System.out.print("\n min  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
 
 		if (occurence > 0) {
-			System.out.print("\n occurence  "+ occurence);
+		//s	System.out.print("\n occurence  "+ occurence);
 			int valeurDeJeu = MAX;
 			for (int i = 0; i < grille.LARGEUR; i++) {
 				if (!grille.colPleine(i)) {
 					Grille copieDeLaGrille = grille.Copie();
 					//occurence--;
+					//System.out.print("\n min " +copieDeLaGrille.getTourDeQuelJoueur().getSymbole());
 					copieDeLaGrille.insere(i, copieDeLaGrille.getTourDeQuelJoueur().getSymbole());
 
 					valeurDeJeu = Math.min(valeurDeJeu, this.max(joueur, copieDeLaGrille, alpha, beta, occurence-1));
 					// doit on tronquer la branche ?
-					if (valeurDeJeu >= alpha ) {
+					if ( alpha >=valeurDeJeu  ) {
 						// ici on tronque la branche on ira donc pas plus loin dans min
 						break;
 						//return valeurDeJeu;
@@ -110,13 +111,13 @@ public class AlgoAlphaBeta {
 	//	System.out.print("\n max  "+  occurence+' '+ grille.getNombreDeTour()+"+ alpha/beta +"+alpha +' '+ beta);
  
 		if (occurence > 0) {
-			System.out.print("\n max occurence  "+ occurence);
+		//	System.out.print("\n max occurence  "+ occurence);
 			int valeurDeJeu = MIN;
 			for (int i = 0; i < grille.LARGEUR; i++) {
 				if (!grille.colPleine(i)) {
 					// init des variables
 					Grille copieDeLaGrille = grille.Copie();
-					
+				//	System.out.print("\n max " +copieDeLaGrille.getTourDeQuelJoueur().getSymbole());
 					// copie insersion dans les grilles
 					copieDeLaGrille.insere(i, copieDeLaGrille.getTourDeQuelJoueur().getSymbole());
 					valeurDeJeu = Math.max(valeurDeJeu, this.min(joueur, copieDeLaGrille, alpha, beta, occurence-1));
@@ -132,15 +133,12 @@ public class AlgoAlphaBeta {
 			return valeurDeJeu;
 		} else {
 			int result = grille.poids(joueur);
-			grille.afficheGrille();
+			//grille.afficheGrille();
 			//System.out.print("\n max result  "+ result);
 			return result;
 		}
 	}
 
-	public int appellealphaBetaNega(Grille grilleACalculer) {
-		return -1;
-	}
 
 	public static void main(String[] args) {
 		

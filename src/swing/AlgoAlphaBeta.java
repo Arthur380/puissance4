@@ -61,7 +61,7 @@ public class AlgoAlphaBeta {
 				poidsColonne[i] = valeurDeJeuCourante;
 								
 			} else {
-				System.out.print("\n outofbound  colonne  ----------------"  );
+			//	System.out.print("\n outofbound  colonne  ----------------"  );
 				poidsColonne[i] = alphaMin;						
 			}
 			

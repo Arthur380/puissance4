@@ -250,8 +250,9 @@ public class Grille extends Object implements Cloneable {
 			SymboleOpposant  =this.getTourDeQuelJoueur().getSymbole();
 		} 
 
-		this.VictoireAdversaire(SymboleOpposant, SymboleACalculer);
-	
+		if(this.VictoireAdversaire(SymboleOpposant, SymboleACalculer))
+				{return AlgoAlphaBeta.MIN;}
+		
 		// on fait le poids pour le joueur actuel
 		// on fait le poids pour le joueur actuel
 		for (int i = 0; i < LARGEUR; i++) {

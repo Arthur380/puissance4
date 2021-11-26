@@ -27,6 +27,6 @@ public class Humain extends JoueurAbstrait {
 		return i;
 	}
 
-
+//kk
 
 }

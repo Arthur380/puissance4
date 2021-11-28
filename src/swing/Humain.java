@@ -8,8 +8,7 @@ import java.util.Scanner;
 // joueur humain (les meilleurs ! sauf si L'IA gagne...
 public class Humain extends JoueurAbstrait {
 	private AlgoAlphaBeta aideHumain;
-	public Humain(char symbole, int lvl) {
-		
+	public Humain(char symbole, int lvl) {		
 		super(symbole, lvl);
 		this.aideHumain = new AlgoAlphaBeta(lvl);
 	}

@@ -19,12 +19,12 @@ public abstract class JoueurAbstrait {
 	}
 
 	public void setNiveau(int niveau) {
-		this.niveau = 4;
+		this.niveau = this.niveau;
 	}
 
 	public JoueurAbstrait(char symbole, int lvl) {
 		this.symbole = symbole;
-		this.niveau = 4;
+		this.niveau = lvl;
 	}
 
 	public char getSymbole() {

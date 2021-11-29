@@ -2,8 +2,10 @@ package swing;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.border.*;
 
 
 
@@ -18,16 +20,37 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 	int joueur = 1; // creation variable joueur
 	private JButton[] colonnes;
 	
+	
+	//////////
+    private JFrame frame;
+    private JLabel[][] slots;
+    private JButton[] buttons;
+    //variables used in grid
+    private int xsize = 7;
+    private int ysize = 6;
+    Grille grille = new Grille();
+    private int nbTour =1;
+
+	
     public JTableBasiqueAvecModeleDynamiqueObjet() {
         super();
  
-        setTitle("JTable avec modèle dynamique");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
-        
-        tab = new int[7][1];
-		colonnes = new JButton[7];
 		jeu = new Jeu(7, 6, 4);		
+
+		JoueurAbstrait joueurA = new Humain('X', 4);
+		joueurA.setNom("1");
+		JoueurAbstrait joueurB = new Ordinateur('O', 4);
+		joueurB.setNom("2");
+		grille.setJoueur1(joueurA);
+		grille.setJoueur2(joueurB);
+		
+        /*setTitle("JTable avec modèle dynamique");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        
+        
+       tab = new int[7][1];
+		colonnes = new JButton[7];
 
 		for (int x = 0; x < 7; x++) {
 			JButton colonne = new JButton("Col " + x); // Creation du JButton par appel du constructeur
@@ -46,31 +69,94 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
         getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
         tableau.setRowHeight(30);
  
-        pack();
+        pack();*/
+        
+        frame = new JFrame("connect four");
+
+        JPanel panel = (JPanel) frame.getContentPane();
+        panel.setLayout(new GridLayout(xsize, ysize + 1));
+
+        slots = new JLabel[xsize][ysize];
+        buttons = new JButton[xsize];
+
+        for (int i = 0; i < xsize; i++) {
+            buttons[i] = new JButton("" + (i + 1));
+            buttons[i].setActionCommand("" + i);
+            buttons[i].addActionListener(new AddAction());
+            panel.add(buttons[i]);
+        }
+        for (int column = 0; column < ysize; column++) {
+            for (int row = 0; row < xsize; row++) {
+                slots[row][column] = new JLabel();
+                slots[row][column].setHorizontalAlignment(SwingConstants.CENTER);
+                slots[row][column].setBorder(new LineBorder(Color.black));
+                panel.add(slots[row][column]);
+            }
+        }
+
+        //jframe stuff
+        frame.setContentPane(panel);
+        frame.setSize(
+                700, 600);
+        frame.setVisible(
+                true);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
  
     private class AddAction extends AbstractAction {
 	public void actionPerformed(ActionEvent evt) // Controle des actions gerees par ActionListener
 	{
 		Object source = evt.getSource();
+		nbTour++;
+		jeu.setNbTour(nbTour);
+
+		System.out.println("jeu tour :" + jeu.getNbTour());
 		char SymboleAPlace;
 		if (jeu.getNbTour() % 2 == 0)
 			SymboleAPlace = 'O';
 		else
 			SymboleAPlace = 'X';
-		for (int i = 0; i < colonnes.length; i++) {
+		
+        frame.setTitle("C'est au tour du joueur " + SymboleAPlace + " de jouer");
 
-			JButton colonne = colonnes[i];
+		for (int i = 0; i < ysize; i++) {
+
+			JButton colonne = buttons[i];
 
 			if (source == colonne) {
-				System.out.println("i " + i);
 				colonnejoue = jeu.placementJeton(i, SymboleAPlace, tableau);
+				System.out.println("i " + i);
 				System.out.println("avant fonction gagnant " + SymboleAPlace);
 				jeu.gagnant(i, colonnejoue, SymboleAPlace);
 				jeu.affichetabJeu();
 			}
 
 		}
+		updateBoard();
 	}}
+    
+    public void updateBoard() {//keeps the gui in sync with the logggggtjiic and grid
+    	System.out.println("In fonction");
+        for (int row = 0; row < xsize; row++) {
+            for (int column = 0; column < ysize; column++) {
+            	System.out.println(jeu.getEqualCase(row, column, 'X'));
+                if (jeu.getEqualCase(row, column, 'X')) {
+                	System.out.println("In first condition");
+                    slots[row][column].setOpaque(true);
+                    slots[row][column].setBackground(Color.red);
+                }
+                if (jeu.getEqualCase(row, column, 'O')) {
+                	System.out.println("In second condition");
 
+                    slots[row][column].setOpaque(true);
+                    slots[row][column].setBackground(Color.blue);
+                }
+            }
+        }
+    }
+    
 }
+
+
+    

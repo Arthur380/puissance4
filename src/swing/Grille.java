@@ -71,6 +71,8 @@ public class Grille extends Object implements Cloneable {
 	public char getcase(int i,int j) {
 		return tabJeu[i][j];
 	}
+	
+	
 
 	// Initialise la grille à vide
 

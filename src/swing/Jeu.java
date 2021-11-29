@@ -26,6 +26,10 @@ public class Jeu {
 	public void setNbTour(int nbTour) {
 		this.nbTour = nbTour;
 	}
+	
+	public boolean getEqualCase(int a, int b, char c) {
+        return tabJeu [a][b] == c;
+    }
 
 	public Jeu(int Colonne, int Ligne, int nbaAligne) {
 		tabJeu = new char[Colonne][Ligne];

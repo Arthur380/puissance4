@@ -7,8 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 class Fenetre implements ActionListener // L'implementation de la fenetre est ActionListener car la fenetre doit savoir gerer l'action du bouton
-{
-    Fenetre2 fen; //tant que la fenetre existe la fenetre2 n'est pas ephemere et reste
+{ //tant que la fenetre existe la fenetre2 n'est pas ephemere et reste
     private JFrame  frame1; // Jframe correspondant au corps dela fenetre
     private JButton button1;
     private JButton button2;

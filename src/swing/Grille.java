@@ -444,7 +444,6 @@ public class Grille extends Object implements Cloneable {
 		System.out.print(" victoireJ1 "+victoireJ1 +" victoireJ2 "+victoireJ2 );
 		
 	}
-
 		
 		/*
 		grille.afficheGrille();

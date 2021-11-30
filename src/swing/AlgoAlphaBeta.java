@@ -173,7 +173,7 @@ public class AlgoAlphaBeta {
 			
 			colonneAJouer = JoueurActuel.placerChar(grille);
 			grille.insere(colonneAJouer,JoueurActuel.getSymbole());
-			if (grille.VictoireAdversaire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
+			if (grille.Victoire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
 				grille.afficheGrille();
 				gagner =true;
 				System.out.print("Bravo c'est gagné "+JoueurActuel.getSymbole() );

@@ -72,6 +72,10 @@ public class Grille extends Object implements Cloneable {
 		return tabJeu[i][j];
 	}
 	
+	public boolean getEqualCase(int a, int b, char c) {
+        return tabJeu [a][b] == c;
+    }
+	
 	
 
 	// Initialise la grille à vide
@@ -192,7 +196,7 @@ public class Grille extends Object implements Cloneable {
 	public JoueurAbstrait getTourJoueurSuivant() {
 		return (this.getNombreDeTour() % 2 == 1 ?this.getJoueur1() : this.getJoueur2());
 	}
-	public boolean	VictoireAdversaire(char SymboleACalculer, char SymboleOpposant){
+	public boolean	Victoire(char SymboleACalculer, char SymboleOpposant){
 		int  poidsAlignement = 0;
 		int descendreLigne = 1, colonneGauche = -1, colonneDroite = 1, Stable = 0,monterLigne = -1;
 		for (int i = 0; i < LARGEUR; i++) {
@@ -256,7 +260,7 @@ public class Grille extends Object implements Cloneable {
 			SymboleOpposant  =this.getTourDeQuelJoueur().getSymbole();
 		} 
 
-		if(this.VictoireAdversaire(SymboleOpposant, SymboleACalculer))
+		if(this.Victoire(SymboleOpposant, SymboleACalculer))
 				{return AlgoAlphaBeta.MIN;}
 		
 		// on fait le poids pour le joueur actuel
@@ -426,7 +430,7 @@ public class Grille extends Object implements Cloneable {
 			
 			colonneAJouer = JoueurActuel.placerChar(grille);
 			grille.insere(colonneAJouer,JoueurActuel.getSymbole());
-			if (grille.VictoireAdversaire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
+			if (grille.Victoire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
 				grille.afficheGrille();
 				gagner =true;
 				System.out.print("Bravo c'est gagné "+JoueurActuel.getNom() );

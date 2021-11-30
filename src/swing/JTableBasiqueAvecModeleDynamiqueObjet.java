@@ -12,7 +12,6 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 	private JTable tableau;
 	private int[][] tab;
 	int colonnejoue;
-	private Jeu jeu;
 	int joueur = 1; // creation variable joueur
 	private JButton[] colonnes;
 
@@ -23,44 +22,23 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 	// variables used in grid
 	private int xsize = 7;
 	private int ysize = 6;
-	Grille grille = new Grille();
+	private Grille grille;
 	private int nbTour = 1;
+	private JoueurAbstrait joueurA;
+	private JoueurAbstrait joueurB;
+	private boolean gagner = false;
 
 	public JTableBasiqueAvecModeleDynamiqueObjet() {
 		super();
 
-		jeu = new Jeu(7, 6, 4);
-
-		JoueurAbstrait joueurA = new Humain('X', 4);
+		boolean win = true;
+		grille = new Grille();
+		joueurA = new Humain('X', 4);
 		joueurA.setNom("1");
-		JoueurAbstrait joueurB = new Ordinateur('O', 4);
+		joueurB = new Ordinateur('O', 4);
 		joueurB.setNom("2");
 		grille.setJoueur1(joueurA);
 		grille.setJoueur2(joueurB);
-
-		/*
-		 * setTitle("JTable avec modèle dynamique");
-		 * setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		 * 
-		 * 
-		 * 
-		 * tab = new int[7][1]; colonnes = new JButton[7];
-		 * 
-		 * for (int x = 0; x < 7; x++) { JButton colonne = new JButton("Col " + x); //
-		 * Creation du JButton par appel du constructeur colonne.setBounds(0 + (70 * x),
-		 * 50, 70, 50); // Le bouton est place aux coordonnees 100 en abscisse et // 150
-		 * // en ordonnee dans le repere de la fenetre. getContentPane().add(colonne);
-		 * colonnes[x] = colonne; colonne.addActionListener(new AddAction()); // On
-		 * precise que le bouton doit etre ecoute afin de gerer les actions // associees
-		 * a celui-ci. }
-		 * 
-		 * tableau = new JTable(modele); // boutons.add(new JButton(new AddAction()));
-		 * 
-		 * getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
-		 * tableau.setRowHeight(30);
-		 * 
-		 * pack();
-		 */
 
 		frame = new JFrame("connect four");
 		frame.setTitle("C'est au tour du joueur rouge de jouer");
@@ -92,57 +70,79 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		updateBoard();
 	}
 
 	private class AddAction extends AbstractAction {
 		public void actionPerformed(ActionEvent evt) // Controle des actions gerees par ActionListener
 		{
 			Object source = evt.getSource();
-			nbTour++;
-			jeu.setNbTour(nbTour);
-
-			System.out.println("jeu tour :" + jeu.getNbTour());
 			char SymboleAPlace;
-			if (jeu.getNbTour() % 2 == 0) {
-				frame.setTitle("C'est au tour du joueur jaune de jouer");
-				SymboleAPlace = 'O';
-			} else {
-				frame.setTitle("C'est au tour du joueur rouge de jouer");
-				SymboleAPlace = 'X';
-			}
+
+			frame.setTitle("C'est au tour du joueur "+grille.getTourDeQuelJoueur().getCouleur()+" de jouer");
 
 			for (int i = 0; i <= ysize; i++) {
 
 				JButton colonne = buttons[i];
 
 				if (source == colonne) {
-					colonnejoue = jeu.placementJeton(i, SymboleAPlace, tableau);
+					grille.insere(i, grille.getTourDeQuelJoueur().getSymbole());
 					System.out.println("i " + i);
-					System.out.println("avant fonction gagnant " + SymboleAPlace);
-					jeu.gagnant(i, colonnejoue, SymboleAPlace);
-					jeu.affichetabJeu();
+					System.out.println("avant fonction gagnant " +  grille.getTourDeQuelJoueur().getSymbole());
+					gagner = grille.Victoire(grille.getTourDeQuelJoueur().getSymbole(), grille.getTourJoueurSuivant().getSymbole());
+					grille.afficheGrille();
 				}
 
 			}
 			updateBoard();
+			if(gagner) {
+				frame.setTitle("Victoire de "+ grille.getTourJoueurSuivant().getCouleur());
+			}else {
+				scenarioIA();
+
+			}
 		}
 	}
 
 	public void updateBoard() {// keeps the gui in sync with the logggggtjiic and grid
 		for (int row = 0; row < xsize; row++) {
 			for (int column = 0; column < ysize; column++) {
-				if (jeu.getEqualCase(row, column, 'X')) {
-					slots[row][column].setIcon(new ImageIcon("./assets/images/jeton_jaune.png"));
+				if (grille.getEqualCase(row, column, 'X')) {
+					slots[row][column].setIcon(new ImageIcon("./assets/images/jeton_jaune_p4.png"));
 					slots[row][column].setOpaque(true);
-					//slots[row][column].setBackground(Color.red);
-				}
-				if (jeu.getEqualCase(row, column, 'O')) {
-					slots[row][column].setIcon(new ImageIcon("./assets/images/jeton_rouge.png"));
+				}else if (grille.getEqualCase(row, column, 'O')) {
+					slots[row][column].setIcon(new ImageIcon("./assets/images/jeton_rouge_p4.png"));
 					slots[row][column].setOpaque(true);
-					slots[row][column].setBackground(Color.blue);
+				}else {
+					slots[row][column].setIcon(new ImageIcon("./assets/images/jeton_blanc_p4.png"));
+					slots[row][column].setOpaque(true);
 				}
 			}
 		}
+	}
+	
+	public void scenarioIA() {
+
+		grille.afficheGrille();
+		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
+		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
+		while(JoueurActuel.getNom() == "1"  && !gagner) {
+			int colonneAJouer;
+			colonneAJouer = JoueurActuel.placerChar(grille);
+			grille.insere(colonneAJouer,JoueurActuel.getSymbole());
+			if (grille.Victoire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
+				grille.afficheGrille();
+				gagner =true;
+				System.out.print("Bravo c'est gagné "+JoueurActuel.getSymbole());
+				frame.setTitle("Le joueur "+grille.getTourDeQuelJoueur().getCouleur()+" a gagné");
+			}
+			
+		//	grille.afficheGrille();
+			JoueurActuel = grille.getTourDeQuelJoueur();
+			JoueurSuivant = grille.getTourJoueurSuivant();		
+			updateBoard();
+
+		}	
 	}
 
 }

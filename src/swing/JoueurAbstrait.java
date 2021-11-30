@@ -30,6 +30,14 @@ public abstract class JoueurAbstrait {
 	public char getSymbole() {
 		return symbole;
 	}
+	
+	public String getCouleur() {
+		if (symbole == 'X')
+			return "rouge";
+		else
+			return "jaune";
+	}
+
 
 	public String getNom() {
 		return nom;

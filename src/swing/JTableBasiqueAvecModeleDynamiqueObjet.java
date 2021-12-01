@@ -97,6 +97,9 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 			updateBoard();
 			if(gagner) {
 				frame.setTitle("Victoire de "+ grille.getTourJoueurSuivant().getCouleur());
+				for (int i = 0; i < xsize; i++) {
+		        buttons[i].setOpaque(false);
+				}
 			}else {
 				scenarioIA();
 
@@ -122,16 +125,14 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 	}
 	
 	public void scenarioIA() {
-
 		grille.afficheGrille();
 		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
 		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
-		while(JoueurActuel.getNom() == "1"  && !gagner) {
+		while(JoueurActuel.getNom() == "2"  && !gagner) {
 			int colonneAJouer;
 			colonneAJouer = JoueurActuel.placerChar(grille);
 			grille.insere(colonneAJouer,JoueurActuel.getSymbole());
 			if (grille.Victoire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
-				grille.afficheGrille();
 				gagner =true;
 				System.out.print("Bravo c'est gagné "+JoueurActuel.getSymbole());
 				frame.setTitle("Le joueur "+grille.getTourDeQuelJoueur().getCouleur()+" a gagné");

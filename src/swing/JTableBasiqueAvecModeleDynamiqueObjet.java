@@ -27,6 +27,8 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 	private JoueurAbstrait joueurA;
 	private JoueurAbstrait joueurB;
 	private boolean gagner = false;
+	private JPanel panel;
+
 
 	public JTableBasiqueAvecModeleDynamiqueObjet() {
 		super();
@@ -42,9 +44,10 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 
 		frame = new JFrame("connect four");
 		frame.setTitle("C'est au tour du joueur rouge de jouer");
-
-		JPanel panel = (JPanel) frame.getContentPane();
+		
+		panel = (JPanel) frame.getContentPane();
 		panel.setLayout(new GridLayout(xsize, ysize + 1));
+		
 
 		slots = new JLabel[xsize][ysize];
 		buttons = new JButton[xsize];
@@ -98,6 +101,7 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 			updateBoard();
 			if(gagner) {
 				frame.setTitle("Victoire de "+ grille.getTourJoueurSuivant().getCouleur());
+				panel.setVisible(false);
 				for (int i = 0; i < xsize; i++) {
 		        buttons[i].setOpaque(false);
 				}
@@ -135,6 +139,8 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 			grille.insere(colonneAJouer,JoueurActuel.getSymbole());
 			if (grille.Victoire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
 				gagner =true;
+				panel.setVisible(false);
+				
 				System.out.print("Bravo c'est gagné "+JoueurActuel.getSymbole());
 				frame.setTitle("Le joueur "+grille.getTourDeQuelJoueur().getCouleur()+" a gagné");
 			}

@@ -21,9 +21,9 @@ public class Humain extends JoueurAbstrait {
 		//grille.affichePoids();
 		System.out.print("\n Où placer le prochain pion? "+this.getSymbole()+" Donnez un numéro de colonne entre 1 et " + Grille.LARGEUR + " : ");
 
-		Scanner sc = new Scanner(System.in);
-		int i = sc.nextInt()-1;
-		
+		//Scanner sc = new Scanner(System.in);
+	//	int i = sc.nextInt()-1;		
+		int i=0;
 		return i;
 	}
 

@@ -52,9 +52,13 @@ public class AlgoAlphaBeta {
 				
 				copieDeLaGrille.insere(i, joueur.getSymbole());
 			//	System.out.print("\n base " +joueur.getSymbole());
-				
-				int valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, PROFONDEUR_EXPLORATION_ALPHA_BETA);
-
+				int valeurDeJeuCourante;
+					if (!copieDeLaGrille.Victoire(joueur.getSymbole(),grille.getTourDeQuelJoueur().getSymbole()))
+				{ valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, PROFONDEUR_EXPLORATION_ALPHA_BETA);}
+				else {
+					valeurDeJeuCourante =AlgoAlphaBeta.MAX;
+				}
+			//	valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, PROFONDEUR_EXPLORATION_ALPHA_BETA);
 				if (valeurDeJeuCourante == valeurDeJeu) {
 					PoissibiliteDeJeu.add(i);
 				} else if (valeurDeJeuCourante > valeurDeJeu) {

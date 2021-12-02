@@ -33,8 +33,8 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 
 		boolean win = true;
 		grille = new Grille();
-		joueurA = new Humain('X', 4);
-		joueurA.setNom("1");
+		joueurA = new Ordinateur('X', 4);
+		joueurA.setNom("2");
 		joueurB = new Ordinateur('O', 4);
 		joueurB.setNom("2");
 		grille.setJoueur1(joueurA);
@@ -71,6 +71,7 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		updateBoard();
+		scenarioIA();
 	}
 
 	private class AddAction extends AbstractAction {
@@ -143,7 +144,8 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 			JoueurSuivant = grille.getTourJoueurSuivant();		
 			updateBoard();
 
-		}	
+		}
+		JoueurActuel.placerChar(grille);
 	}
 
 }

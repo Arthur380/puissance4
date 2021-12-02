@@ -14,8 +14,8 @@ public class AlgoAlphaBeta {
 	public static final int MAX = Integer.MAX_VALUE;
 	// INT_MIN Minimum value for a variable of type int. -2147483648
 	public static final int MIN = Integer.MIN_VALUE;
-	private static final int PROFONDEUR_EXPLORATION_ALPHA_BETA = 4;
-	private int niveau = 4;
+	//private static final int PROFONDEUR_EXPLORATION_ALPHA_BETA = 4;
+	private int niveau ;
 
 	public int getNiveau() {
 		return 4;
@@ -58,7 +58,7 @@ public class AlgoAlphaBeta {
 			//	System.out.print("\n base " +joueur.getSymbole());
 				int valeurDeJeuCourante;
 					if (!copieDeLaGrille.Victoire(joueur.getSymbole(),grille.getTourDeQuelJoueur().getSymbole()))
-				{ valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, PROFONDEUR_EXPLORATION_ALPHA_BETA);}
+				{ valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, this.niveau);}
 				else {
 					valeurDeJeuCourante =AlgoAlphaBeta.MAX;
 				}
@@ -89,6 +89,7 @@ public class AlgoAlphaBeta {
 			//	System.out.print("\n Colonne ----------------" + i );
 				// copie de la grille (grille courante a la boucle for)
 				Grille copieDeLaGrille = grille.Copie();
+				copieDeLaGrille.insere(i, joueur.getSymbole());
 							int valeurDeJeuCourante;
 				if (copieDeLaGrille.Victoire(joueur.getSymbole(),grille.getTourDeQuelJoueur().getSymbole()))
 				{return i;}
@@ -171,7 +172,7 @@ public class AlgoAlphaBeta {
 		long debut = System.currentTimeMillis();
 		boolean win = true;
 		Grille grille = new Grille();
-		JoueurAbstrait joueurA = new Ordinateur('X', 4);
+		JoueurAbstrait joueurA = new Ordinateur('X', 8);
 		joueurA.setNom(" Humain");
 		JoueurAbstrait joueurB = new Ordinateur('O', 4);
 		joueurB.setNom("Ordinateur ");

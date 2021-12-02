@@ -35,8 +35,8 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 
 		boolean win = true;
 		grille = new Grille();
-		joueurA = new Humain('X', 4);
-		joueurA.setNom("1");
+		joueurA = new Ordinateur('X', 6);
+		joueurA.setNom("2");
 		joueurB = new Ordinateur('O', 4);
 		joueurB.setNom("2");
 		grille.setJoueur1(joueurA);
@@ -146,10 +146,10 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 				Component[] com = panel.getComponents();
 
 				for (int a = 0; a < com.length; a++) {
-					panel.remove(com[a]);
+			//		panel.remove(com[a]);
 				}
 				JLabel jlabel = new JLabel("Victoire du joueur "+ grille.getTourDeQuelJoueur().getCouleur());
-				panel.add(jlabel);
+				//panel.add(jlabel);
 				frame.setTitle("Le joueur "+grille.getTourDeQuelJoueur().getCouleur()+" a gagné");
 			}
 			

@@ -406,9 +406,9 @@ public class Grille extends Object implements Cloneable {
 		long debut = System.currentTimeMillis();
 		boolean win = true;
 		Grille grille = new Grille();
-		JoueurAbstrait joueurA = new Ordinateur('X', 4);
+		JoueurAbstrait joueurA = new Ordinateur('X', 6);
 		joueurA.setNom("1");
-		JoueurAbstrait joueurB = new Ordinateur('O', 4);
+		JoueurAbstrait joueurB = new Ordinateur('O', 1);
 		joueurB.setNom("2");
 		grille.setJoueur1(joueurA);
 		grille.setJoueur2(joueurB);

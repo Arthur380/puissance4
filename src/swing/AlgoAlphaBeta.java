@@ -37,6 +37,10 @@ public class AlgoAlphaBeta {
 		int poidsColonne[] = new int[Grille.LARGEUR];
 			List<Integer> PoissibiliteDeJeu = new ArrayList<Integer>();
 		int profondeurArbre = grille.getTourDeQuelJoueur().getNiveau();
+		int colGagnante = verifCoupGagnant( joueur,  grille);
+		if (colGagnante>=0) {
+			return colGagnante;
+		}
 		// on va faire le le calcul pouur chaque colonne de la grille
 		for (int i = 0; i < Grille.LARGEUR; i++) {
 			// on regarde si la col est pleine si c'est plein pas besoin de copier la grille
@@ -78,6 +82,20 @@ public class AlgoAlphaBeta {
 		Collections.shuffle(PoissibiliteDeJeu);
 		grille.setPoidsColonnes(poidsColonne);
 		return PoissibiliteDeJeu.get(0);
+	}
+	private int verifCoupGagnant(JoueurAbstrait joueur, Grille grille) {
+		for (int i = 0; i < Grille.LARGEUR; i++) {
+			if (!grille.colPleine(i) ) {
+			//	System.out.print("\n Colonne ----------------" + i );
+				// copie de la grille (grille courante a la boucle for)
+				Grille copieDeLaGrille = grille.Copie();
+							int valeurDeJeuCourante;
+				if (copieDeLaGrille.Victoire(joueur.getSymbole(),grille.getTourDeQuelJoueur().getSymbole()))
+				{return i;}
+		
+				}		
+			}
+		return -1;
 	}
 
 // algo min de alpha beta, ici on applique la valeur min

@@ -33,8 +33,8 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 
 		boolean win = true;
 		grille = new Grille();
-		joueurA = new Ordinateur('X', 4);
-		joueurA.setNom("2");
+		joueurA = new Humain('X', 4);
+		joueurA.setNom("1");
 		joueurB = new Ordinateur('O', 4);
 		joueurB.setNom("2");
 		grille.setJoueur1(joueurA);

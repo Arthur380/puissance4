@@ -1,32 +1,46 @@
+/*
+ * Gestion de la partie graphique du projet
+ * 
+ */
+
 package swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-class Fenetre implements ActionListener // L'implementation de la fenetre est ActionListener car la fenetre doit savoir gerer l'action du bouton
-{ //tant que la fenetre existe la fenetre2 n'est pas ephemere et reste
-    private JFrame  frame1; // Jframe correspondant au corps dela fenetre
+
+// L'implémentation de la fenêtre est ActionListener car la fenêtre doit savoir gérer l'action du bouton
+class Fenetre implements ActionListener
+{ 
+	//tant que la fenêtre existe la fenêtre 2 n'est pas éphemère et reste
+    private JFrame  frame1; //correspond au corps de la fenêtre
     private JButton button1;
     private JButton button2;
     private JButton button3;
     private JLabel MonLabel;
-     
-    Fenetre () // Constructeur de la classe fenetre   : remarque un constructeur est toujours public car il doit etre vu depuis l'exterieur de la classe
+    
+//--------------------------CONSTRUCTEUR-------------------------------------------------
+    /*Fenetre: constructeur fenêtre
+     * (public pour être vu par tous depuis l'extérieur)
+     */
+    Fenetre () 
     {
-        frame1 = new JFrame ("PUISSANCE 4"); // Creation de la JFrame par appel du constructeur
-        frame1.setSize(600 , 400);
-         
-         
-         
-        DesignFenetre(); // Fonction mettant en place le comptenu de la fenetre    
-         
-        frame1.setDefaultCloseOperation(frame1.EXIT_ON_CLOSE) ; // Gestion de la fermutre de la fenetre
-        frame1.setVisible(true) ;                               // Affichage de la fenetre a l'ecran
+    	//création de la JFrame par appel du constructeur
+        frame1 = new JFrame ("PUISSANCE 4");
+        frame1.setSize(600, 400);
+        
+        //mise en place du contenu de la fenêtre 
+        DesignFenetre();  
+
+        //gestion de fermeture et affichage de la fenêtre
+        frame1.setDefaultCloseOperation(frame1.EXIT_ON_CLOSE);
+        frame1.setVisible(true);
     }
      
+    
+//----------------------------------------------------------------------------------------
     private void DesignFenetre()
     {
          
@@ -62,10 +76,16 @@ class Fenetre implements ActionListener // L'implementation de la fenetre est Ac
         button3.addActionListener(this); // On precise que le bouton doit etre ecoute afin de gerer les actions associees a celui-ci.
          
         frame1.add(button3);         // Placement du bouton sur la fenetre
-         
- 
     }
-    public void actionPerformed(ActionEvent evt) // Controle des actions gerees par ActionListener
+    
+//----------------------------------------------------------------------------------------
+    /*actionPerformed: controle des actions gérées par ActionListener
+     * 
+     * @param ActionEvent evt : évenement généré sur la grille de jeu
+     * 
+     * @return void
+     */
+    public void actionPerformed(ActionEvent evt) // 
     {
         Object source = evt.getSource();
          
@@ -83,10 +103,5 @@ class Fenetre implements ActionListener // L'implementation de la fenetre est Ac
         {
         System.exit(0);    
         }  
-        //if(evt.getSource()==button3)
-        //{
-        //this.setVisible(false);
-        //this.dispose();
-        //}
     }
 }

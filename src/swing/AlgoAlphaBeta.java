@@ -1,4 +1,4 @@
-/*
+/**
  * Partie algorithme de notre projet Alpha-Beta
  * Algorithme basé sur Min-Max avec élagague des branches qui
  * ne conduisent pas à l'objectif de départ (pour un gain de temps)
@@ -35,12 +35,12 @@ public class AlgoAlphaBeta {
 
 	
 //----------------------------------------------------------------------------------------
-	/*ouJouer : création d'une copie de la grille courante et insertion d'un jeton pour chaque colonne
+	/**Création d'une copie de la grille courante et insertion d'un jeton pour chaque colonne
 	 * 
-	 * @param JoueurAbstrait joueur : joueur actuel
-	 * @param Grille grille : grille de jeu actuelle
+	 * @param joueur joueur actuel
+	 * @param grille grille de jeu actuelle
 	 * 
-	 * @return int : numéro de colonne au plus grand poids
+	 * @return numéro de colonne au plus grand poids
 	 */
 	public int ouJouer(JoueurAbstrait joueur, Grille grille) {
 
@@ -106,10 +106,10 @@ public class AlgoAlphaBeta {
 	
 	
 //----------------------------------------------------------------------------------------
-	/*verifCoupGagnant : numéro de colonne si victoire au prochain coup
+	/**Numéro de colonne si victoire au prochain coup
 	 * 
-	 * @param JoueurAbstrait joueur : joueur actuel
-	 * @param Grille grille : grille de jeu actuelle
+	 * @param joueur joueur actuel
+	 * @param grille grille de jeu actuelle
 	 * 
 	 * @return int 
 	 */
@@ -134,15 +134,15 @@ public class AlgoAlphaBeta {
 
 	
 //----------------------------------------------------------------------------------------
-	/*min : calcul du MIN dans notre algo AlphaBeta
+	/**Calcul du MIN dans notre algo AlphaBeta
 	 * 
-	 * @param JoueurAbstrait joueur : joueur actuel
-	 * @param Grille grille : grille de jeu actuelle
-	 * @param int alpha : MIN
-	 * @param int beta : MAX
-	 * @param int occurence : profondeur de recherche
+	 * @param joueur joueur actuel
+	 * @param grille grille de jeu actuelle
+	 * @param alpha MIN
+	 * @param beta MAX
+	 * @param occurence profondeur de recherche
 	 * 
-	 * @return int : valeur de MIN
+	 * @return valeur de MIN
 	 */
 	private int min(JoueurAbstrait joueur, Grille grille, int alpha, int beta, int occurence) {
 		
@@ -182,15 +182,15 @@ public class AlgoAlphaBeta {
 	
 
 //----------------------------------------------------------------------------------------
-	/*max : calcul du MAX dans notre algo AlphaBeta
+	/**Calcul du MAX dans notre algo AlphaBeta
 	 * 
-	 * @param JoueurAbstrait joueur : joueur actuel
-	 * @param Grille grille : grille de jeu actuelle
-	 * @param int alpha : MIN
-	 * @param int beta : MAX
-	 * @param int occurence : profondeur de recherche
+	 * @param joueur joueur actuel
+	 * @param grille grille de jeu actuelle
+	 * @param alpha MIN
+	 * @param beta MAX
+	 * @param occurence profondeur de recherche
 	 * 
-	 * @return int : valeur de MAX
+	 * @return valeur de MAX
 	 */
 	private int max(JoueurAbstrait joueur, Grille grille, int alpha, int beta, int occurence) {
 		
@@ -227,7 +227,7 @@ public class AlgoAlphaBeta {
 
 
 //----------------------------------------------------------------------------------------
-	/*main : méthode pour les statistiques du projet, création d'une partie entre un Humain et un Ordinateur
+	/**Méthode pour les statistiques du projet, création d'une partie entre un Humain et un Ordinateur
 	 * 
 	 * @return void
 	 */

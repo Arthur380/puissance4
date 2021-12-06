@@ -6,16 +6,14 @@ import java.util.Arrays;
 import javax.swing.JTable;
 
 public class Grille extends Object implements Cloneable {
-	// de gauche a droite
-	public static final int LARGEUR = 7;
-	// de bas en haut
-	public static final int LONGUEUR = 6;
-	public static final int CONDITION_VICTOIRE = 4;
-	public static final int POIDS_MAX = 10;
-	public static final char CHAR_NULL = '.';
-	private char tabJeu[][];
-	private int nombreDeTour = 0;
-	private int poidsColonnes[] = new int[Grille.LARGEUR];
+	public static final int 	LARGEUR 			= 7; //déplacement de Gauche à Droite
+	public static final int 	LONGUEUR 			= 6; //déplacement de Bas en Haut
+	public static final int 	CONDITION_VICTOIRE 	= 4;
+	public static final int 	POIDS_MAX 			= 10;
+	public static final char 	CHAR_NULL 			= '.';
+	private char 				tabJeu[][];
+	private int 				nombreDeTour 		= 0;
+	private int 				poidsColonnes[] 	= new int[Grille.LARGEUR];
 
 
 	public int[] getPoidsColonnes() {
@@ -25,7 +23,11 @@ public class Grille extends Object implements Cloneable {
 	public void setPoidsColonnes(int[] poidsColonnes) {
 		this.poidsColonnes = poidsColonnes;
 	}
-
+	
+	//----------------------------------------------------------------------------------------
+	private JoueurAbstrait joueur1;
+	private JoueurAbstrait joueur2;
+	
 	public JoueurAbstrait getJoueur1() {
 		return joueur1;
 	}
@@ -42,17 +44,8 @@ public class Grille extends Object implements Cloneable {
 		this.joueur2 = joueur2;
 	}
 
-	private JoueurAbstrait joueur1;
-	private JoueurAbstrait joueur2;
-
-	public JoueurAbstrait j() {
-		// tour paire = joueur 1 / impaire joueur 2
-		if (this.getNombreDeTour() % 2 == 0)
-			return getJoueur1();
-		else
-			return getJoueur2();
-	}
-
+	
+	//----------------------------------------------------------------------------------------
 	public int getNombreDeTour() {
 		return nombreDeTour;
 	}
@@ -61,6 +54,7 @@ public class Grille extends Object implements Cloneable {
 		this.nombreDeTour = nombreDeTour;
 	}
 
+	//----------------------------------------------------------------------------------------
 	public char[][] getTabJeu() {
 		return tabJeu;
 	}
@@ -78,32 +72,58 @@ public class Grille extends Object implements Cloneable {
 	
 	
 
-	// Initialise la grille à vide
-
+//--------------------------CONSTRUCTEUR-------------------------------------------------
+    /**Constructeur grille de jeu à vide
+     * (public pour être vu par tous depuis l'extérieur)
+     */
 	public Grille() {
+		
 		this.tabJeu = new char[LARGEUR][LONGUEUR];
+		
+		//pour chaque colonne, chaque ligne, mise d'un '.' dans la cellule
 		for (int i = 0; i < LARGEUR; i++) {
 			for (int j = 0; j < LONGUEUR; j++) {
-
 				this.tabJeu[i][j] = CHAR_NULL;
 			}
 		}
+		//initialisation du nombre de tour
 		nombreDeTour = 0;	
-	
 	}
-
+	
+	
+//----------------------------------------------------------------------------------------
+	/**Insertion d'un jeton dans la colonne i avec le symbole donné
+	 * 
+	 * @param i colonne ciblée
+	 * @param symbole symbole à insérer (X ou O)
+	 * 
+	 * @return void 
+	 */
 	public void insere(int i, char symbole) {
+		
+		//vérification que la colonne n'est pas pleine
 		if (colPleine(i)) {
 			System.out.println("Colonne " + i + "est pleine");
+			
 		} else {
-			// on prends la dernioere valeur joué sur cette colonne
+			
+			//insertxion au dessus du denier jeton joué dans la colonne
 			int j = this.dernierSymbole(i);
-
 			this.tabJeu[i][j] = symbole;
+			
+			//incrémentation du nb de tour 
 			this.setNombreDeTour(this.getNombreDeTour() + 1);
 		}
 	}
 
+//----------------------------------------------------------------------------------------
+	/**Insertion d'un jeton dans la colonne i avec le symbole donné
+	 * 
+	 * @param int i : colonne ciblée
+	 * @param char symbole : symbole à insérer (X ou O)
+	 * 
+	 * @return void 
+	 */
 	public Grille Copie() {
 		Grille copieDeLaGrille = new Grille();
 		copieDeLaGrille.setTabJeu(cloneArray(this.tabJeu));
@@ -111,8 +131,8 @@ public class Grille extends Object implements Cloneable {
 		copieDeLaGrille.setJoueur1(joueur1);
 		copieDeLaGrille.setJoueur2(joueur2);
 		return copieDeLaGrille;
-		
 	}
+	
 	public Object clone() {
 		try {
 			Grille CopieGrille = (Grille) super.clone();
@@ -124,10 +144,13 @@ public class Grille extends Object implements Cloneable {
 			 throw new InternalError();
 			 }	
 	}
+
+//----------------------------------------------------------------------------------------
 	/**
 	 * Clones the provided array
 	 * 
 	 * @param src
+	 * 
 	 * @return a new clone of the provided array
 	 */
 	public static char[][] cloneArray(char[][] src) {
@@ -139,17 +162,25 @@ public class Grille extends Object implements Cloneable {
 	    return target;
 	}
 
+//----------------------------------------------------------------------------------------
+	/**
+	 * Booléen vérification si colonne pleine ou non
+	 * 
+	 * @param i colonne ciblée
+	 * 
+	 * @return colonne pleine ou non 
+	 */
 	public boolean colPleine(int i) {
-		// retourne vrai si on a autre chose que . en haut (le tableau est init a
-		// .)
-		// System.out.print("\n Colpleine " + (this.tabJeu[i][LONGUEUR-1] != ' ')+" Col
-		// "+ i+" " +this.tabJeu[i][LONGUEUR-1]);
-
 		return !(this.tabJeu[i][0] == CHAR_NULL);
 	}
 
-	public boolean grillePleine(int i) {
-		// la grille est pleine si on a autant de case de que nombre de tour
+//----------------------------------------------------------------------------------------
+	/**
+	 * Booléen grille pleine si autant de cases que de nb de tour
+	 * 
+	 * @return grille pleine ou non 
+	 */
+	public boolean grillePleine() {
 		return (LARGEUR * LONGUEUR == this.getNombreDeTour());
 	}
 
@@ -325,7 +356,7 @@ public class Grille extends Object implements Cloneable {
 				} 
 			}
 		}
-		//if(poids > 24) {System.out.print("\n max result  "+ poids);this.afficheGrille();}
+		
 		return poids;
 	}
 
@@ -337,10 +368,7 @@ public class Grille extends Object implements Cloneable {
 		int boucleMax = 0, poidsColonne = POIDS_MAX;
 		boolean boucler = true;
 		int tourDeBoucleMax = 0;
-		// la longeur = ligne
-		// la largeur = colonne
-		//
-	//	System.out.println("PASSAGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE " +colonneDepart +" " +lignerDepart);
+		
 		while (boucler && tourDeBoucleMax<CONDITION_VICTOIRE ) {
 			try {				
 				if (this.tabJeu[colonne][ligne] == symboleJoueur) {
@@ -366,8 +394,6 @@ public class Grille extends Object implements Cloneable {
 		}
 		if (poidsColonne< 0) {
 			poidsColonne = 0;
-		//	this.afficheGrille();
-		//System.out.println("poidsColonne " +poidsColonne);
 		}
 
 	
@@ -417,13 +443,6 @@ public class Grille extends Object implements Cloneable {
 		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
 		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
 
-		
-		/*	for (int i = 0; i < LARGEUR; i++) {
-			for (int j = grille.dernierSymbole(i); j < LONGUEUR; j++) {
-				System.out.print("\ni , "+ i + " j "+ j + " valeur"+ grille.getcase(i, j) );
-			}
-		}*/		
-		
 		boolean gagner=false; 
 		while(!gagner ) {
 			int colonneAJouer;
@@ -448,34 +467,5 @@ public class Grille extends Object implements Cloneable {
 		System.out.print(" victoireJ1 "+victoireJ1 +" victoireJ2 "+victoireJ2 );
 		
 	}
-		
-		/*
-		grille.afficheGrille();
-		System.out.print("\n poids  "+JoueurSuivant.getNom());
-		System.out.print("\n " +JoueurSuivant.placerChar(grille));/*	
-		grille.afficheGrille();
-		grille.insere(4, JoueurActuel.getSymbole());
-		grille.insere(4, JoueurActuel.getSymbole());
-		System.out.print("\n poids important  "+joueurA.getNom()+" " + grille.poids(joueurA));	
-		grille.insere(4, JoueurActuel.getSymbole());
-		grille.insere(4, JoueurActuel.getSymbole());
-		grille.insere(1, JoueurActuel.getSymbole());
-		grille.afficheGrille();
-		System.out.print("\n poids  "+joueurA.getNom()+" " +joueurA.placerChar(grille));		
-		System.out.print("\n poids  " +joueurB.getNom()+" " + grille.poids(joueurB));	
-		System.out.println("\n"+ (System.currentTimeMillis()-debut));
-		Grille g2 = (Grille) grille.clone();
-		System.out.print("\n grille aprés creation G2  " );
-		grille.afficheGrille();
-		g2.insere(1, JoueurActuel.getSymbole());
-		System.out.print("\n grille aprés insertion G2  " );
-		grille.afficheGrille();
-		System.out.print("\n G2 aprés insertion G2  " );
-		g2.afficheGrille();
-		Grille g3 = g2.Copie();
-		g2.insere(1, JoueurActuel.getSymbole());
-		System.out.print("\n g3 aprés insertion G2  " );
-		g3.afficheGrille();
-		g2.afficheGrille();*/
 	
 }

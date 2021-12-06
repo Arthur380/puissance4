@@ -22,7 +22,7 @@ class Fenetre implements ActionListener
     private JLabel MonLabel;
     
 //--------------------------CONSTRUCTEUR-------------------------------------------------
-    /*Fenetre: constructeur fenêtre
+    /**Constructeur fenêtre
      * (public pour être vu par tous depuis l'extérieur)
      */
     Fenetre () 
@@ -40,7 +40,7 @@ class Fenetre implements ActionListener
     }
      
     
-//----------------------------------------------------------------------------------------
+
     private void DesignFenetre()
     {
          
@@ -79,9 +79,9 @@ class Fenetre implements ActionListener
     }
     
 //----------------------------------------------------------------------------------------
-    /*actionPerformed: controle des actions gérées par ActionListener
+    /**Controle des actions gérées par ActionListener
      * 
-     * @param ActionEvent evt : évenement généré sur la grille de jeu
+     * @param evt évenement généré sur la grille de jeu
      * 
      * @return void
      */

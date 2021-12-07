@@ -220,7 +220,7 @@ public class Grille extends Object implements Cloneable {
 	/**
 	 * @return liste des colonnes qui peuvent être jouées
 	 */
-	public ArrayList<Integer> colonesJouables() {
+	public ArrayList<Integer> colonnesJouables() {
 
 		ArrayList<Integer> colonnesJouables = new ArrayList<Integer>();
 
@@ -505,15 +505,16 @@ public class Grille extends Object implements Cloneable {
 		
 		int victoireJ1=0;
 		int victoireJ2=0;
+		long debut = System.currentTimeMillis();
 		
-		for( int nbjeu=0; nbjeu<20;nbjeu++) {
+		for( int nbjeu=0; nbjeu<100;nbjeu++) {
 			
-			long debut = System.currentTimeMillis();
+		
 			boolean win = true;
 			Grille grille = new Grille();
 			JoueurAbstrait joueurA = new Ordinateur('X', 6);
 			joueurA.setNom("1");
-			JoueurAbstrait joueurB = new Ordinateur('O', 2);
+			JoueurAbstrait joueurB = new Ordinateur('O', 4);
 			joueurB.setNom("2");
 			grille.setJoueur1(joueurA);
 			grille.setJoueur2(joueurB);
@@ -542,7 +543,7 @@ public class Grille extends Object implements Cloneable {
 			}	
 		}
 		
-		System.out.print(" victoireJ1 "+victoireJ1 +" victoireJ2 "+victoireJ2 );	
+		System.out.print(" victoireJ1 "+victoireJ1 +" victoireJ2 "+victoireJ2 +"  Temps " + (System.currentTimeMillis()-debut) );	
 	}
 	
 }

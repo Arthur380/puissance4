@@ -46,7 +46,10 @@ class Fenetre implements ActionListener
          
         frame1.setLayout(null);  // L'agencement (Layout) null permet un positionnement en fonction des coordonnees relative en pixel par l'utilisation de la commande setBounds
          
-        MonLabel = new JLabel("PUISSANCE 4 (pas pique des hannetons) ");
+        MonLabel = new JLabel("PUISSANCE 4  Arthur Raimbert\r\n"
+        		+ " Alice Foraison \r\n"
+        		+ "Laïdi Debbouze \r\n"
+        		+ "");
          
         MonLabel.setBounds( 150, 5, 500, 50 ); // Le JLabel est place aux coordonnees 100 en abscisse et 150 en ordonnee dans le repere de la fenetre.
  

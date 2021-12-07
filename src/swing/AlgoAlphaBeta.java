@@ -56,7 +56,7 @@ public class AlgoAlphaBeta {
 		{
 			return colGagnante;
 		}
-		
+		PoissibiliteDeJeu = grille.colonnesJouables();
 		//parcour de la grille en largeur = par colonne
 		for (int i = 0; i < Grille.LARGEUR; i++) {
 			

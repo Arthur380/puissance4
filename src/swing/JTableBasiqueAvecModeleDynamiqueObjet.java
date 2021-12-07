@@ -47,7 +47,7 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 		grille.setJoueur2(joueurB);
 		
 		//nouvelle fenêtre
-		frame = new JFrame("connect four");
+		frame = new JFrame("Fenetre de jeu");
 		frame.setTitle("C'est au tour du joueur rouge de jouer");
 		
 		panel = (JPanel) frame.getContentPane();
@@ -166,7 +166,7 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
 		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
 		
-		while(JoueurActuel.getNom() == "2"  && !gagner) {
+		while(JoueurActuel.getNom() == "2"  && !gagner) {///at
 			int colonneAJouer;
 			colonneAJouer = JoueurActuel.placerChar(grille);
 			grille.insere(colonneAJouer,JoueurActuel.getSymbole());

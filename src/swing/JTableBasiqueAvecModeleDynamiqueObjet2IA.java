@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*; //bordures
 import javax.swing.border.*;
 
-public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
+public class JTableBasiqueAvecModeleDynamiqueObjet2IA extends JFrame {
 	private ModeleDynamiqueObjet modele = new ModeleDynamiqueObjet();
 	private JTable tableau;
 	private JPanel panel;
@@ -31,14 +31,14 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 	
 
 
-	public JTableBasiqueAvecModeleDynamiqueObjet() {
+	public JTableBasiqueAvecModeleDynamiqueObjet2IA() {
 		super();
 
 		boolean win = true;
 		grille = new Grille();
 		
 		//joueur 1
-		joueurA = new Humain('X', 4);
+		joueurA = new Ordinateur('X', 4);
 		joueurA.setNom("1");
 		grille.setJoueur1(joueurA);
 		//joueur 2
@@ -166,12 +166,18 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 		JoueurAbstrait JoueurActuel = grille.getTourDeQuelJoueur();
 		JoueurAbstrait JoueurSuivant = grille.getTourJoueurSuivant();
 		
-		while(JoueurActuel.getNom() == "2"  && !gagner) {
+		while(!gagner) {
 			int colonneAJouer;
 			colonneAJouer = JoueurActuel.placerChar(grille);
 			grille.insere(colonneAJouer,JoueurActuel.getSymbole());
 			if (grille.Victoire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
 				gagner = true;
+
+				panel.getComponents();
+
+				new JLabel("Victoire du joueur "+ grille.getTourDeQuelJoueur().getCouleur());
+				
+				frame.setTitle("Le joueur "+grille.getTourDeQuelJoueur().getCouleur()+" a gagné");
 			}
 			
 			JoueurActuel = grille.getTourDeQuelJoueur();

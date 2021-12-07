@@ -4,6 +4,14 @@ import javax.swing.JTable;
 
 public class Jeu {
 
+	private char charVide;
+	private char tabJeu[][];
+	private int C;
+	private int L;
+	private int condWin;
+	private int nbTour;
+
+	//----------------------------------------------------------------------------------------
 	public char[][] getTabJeu() {
 		return tabJeu;
 	}
@@ -12,13 +20,7 @@ public class Jeu {
 		this.tabJeu = tabJeu;
 	}
 
-	private char tabJeu[][];
-	private int C;
-	private int L;
-	private int condWin;
-	private int nbTour;
-	private char charVide;
-
+	//----------------------------------------------------------------------------------------
 	public int getNbTour() {
 		return nbTour;
 	}
@@ -40,7 +42,6 @@ public class Jeu {
 		charVide = 'V';
 		iniJeu();
 		
-
 		System.out.println("Objet jeu initialiser");
 		affichetabJeu();
 	}
@@ -52,10 +53,11 @@ public class Jeu {
 		
 	}
 
-	// affichage du tabJeu:
+	
+	/**
+	 * Affiche le jeu actuel dans la console
+	 */
 	public void affichetabJeu() {
-
-		// System.out.println("Tour " + i + ", Etat du tabJeu :");
 
 		for (int loop = 0; loop < C + 2 + 2 * C; loop++)
 			System.out.print('-');
@@ -71,24 +73,35 @@ public class Jeu {
 		}
 	}
 
+	/**Placement d'un jeton ayant un symbole dans une table donnée dans une certaine colonne
+	 * 
+	 * @param CJoue
+	 * @param SymboleAPlace symbole du joueur (X ou O) à placer
+	 * @param aff table de jeu
+	 * @return nb de lignes testées
+	 */
 	public int placementJeton(int CJoue, char SymboleAPlace, JTable aff ) {
 		// on verifie la case la plus haute du tableau si cette à déjà un piuon alors
 		// C = pleine
 		System.out.println("CJoue "+CJoue);
+		
 		if (tabJeu[CJoue][0] != charVide) {
 			System.out.println("faux");
 			return -1;
+			
 		} else {
 
 			System.out.println("Placement C " + (CJoue + 1) + " symbole " + SymboleAPlace);
-			// placement du jeton:
+			
+			// placement du jeton
 			int ligneTester = L - 1;
 			System.out.println("CJoue" + CJoue + " ligneTester" + ligneTester);
+			
 			while (tabJeu[CJoue][ligneTester] != charVide) {
 				ligneTester--;
 				System.out.println("ligne" + ligneTester);
 			}
-		//	aff.SetValueRowCol(ligneTester, CJoue , SymboleAPlace);
+			
 			System.out.println("ligne" + ligneTester);
 			tabJeu[CJoue][ligneTester] = SymboleAPlace;
 			nbTour++;
@@ -98,10 +111,18 @@ public class Jeu {
 
 	}
 
+	/**
+	 * Vérifie si un joueur est gagnant ou non
+	 * @param CJoue colonne où le jeton est joué
+	 * @param rang ligne sur laquelle le jeton est placé
+	 * @param symbole X ou O
+	 * @return victoire ou non pour un symbole dans la direction gagnante
+	 */
 	public boolean gagnant(int CJoue, int rang, char symbole) {
 		// pour les diagonales on part du point de jeu et on somme en descendant la plus longue chaine de symbole 
 		// puis on repart du rang et on fait vers le haut
-		// diagonal NordOuest SudEst=> \
+		
+		//diagonale NordOuest SudEst=> \
 		int x, y, somme;
 		String win= " "; 
 		x = CJoue ;
@@ -126,9 +147,9 @@ public class Jeu {
 		max = somme;
 		System.out.println("somme " + somme +" condWin " + condWin);
 		if (somme >= condWin)
-			win = "diagonal NordOuest SudEst=> \\ diagonal NordOuest SudEst=> \\";
+			win = "diagonale NordOuest SudEst=> \\ diagonale NordOuest SudEst=> \\";
 
-		// diagonale NordEST SudOuest => /
+		//diagonale NordEST SudOuest => /
 		x = CJoue;
 		y = rang;
 		somme = -1 ;
@@ -153,7 +174,7 @@ public class Jeu {
 		if (somme >= condWin)
 			win = "Diagonale NordEST SudOuest => /";
 	
-		// verticale => |
+		//de colonne verticale => |
 		x = CJoue;
 		y = rang;
 		somme = -1 ;	
@@ -174,31 +195,35 @@ public class Jeu {
 		if (somme >= condWin)
 			win = "verticale => |";
 
-		//  horizontale => -
+		//en ligne horizontale => -
 		x = CJoue;
 		y = rang;
 		somme = -1 ;	
 		while (x >= 0 && tabJeu[x][y] == symbole && somme<condWin) {
 			x--;
 			somme++;
-		}		
+		}
+		
 		x = CJoue;
 		while (x < C && tabJeu[x][y] == symbole && somme<condWin) {
 			x++;
 			somme++;
 		}
-		if(somme>max)
-		max = somme;
-		System.out.println("horizontale => - somme " + somme +" condWin " + condWin);
-		if (max >= condWin)
+		
+		if(somme>max) {
+			max = somme;
+			System.out.println("horizontale => - somme " + somme +" condWin " + condWin);
+		}
+	
+		if (max >= condWin) {
 			win = "horizontale => -";
+		}
 
 		if (max >= condWin) {
-
-			System.out.println("****VICTOIRE DE "+symbole+"**** en "+ win );
+			System.out.println("****VICTOIRE DE "+ symbole +"**** en "+ win );
 			return true;
 		} else
-			System.out.println("****PAS VICTOIRE DE "+symbole+"**** en "+ win );
+			System.out.println("****PAS VICTOIRE DE "+ symbole +"**** en "+ win );
 			return false;
 	}
 }

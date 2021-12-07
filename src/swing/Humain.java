@@ -3,9 +3,6 @@
  */
 package swing;
 
-import java.util.Scanner;
-
-
 public class Humain extends JoueurAbstrait {
 	//
 	private AlgoAlphaBeta aideHumain;

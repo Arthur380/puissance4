@@ -1,10 +1,16 @@
 package swing;
 
+/**
+ * Lancement de l'application graphique
+ * 
+ */
 public class Projet {
-	private static Fenetre fen;      // Declaration d'un objet Fenetre nomme fen
+	//objet Fenêtre
+	private static Fenetre fen;      
 	 
     public static void main(String[] args)
-    {
-        fen = new Fenetre(); // Creation de la fenetre par appel du constructeur
+    { 
+    	//création de la fenêtre par appel du constructeur
+        fen = new Fenetre();
     }
 }

@@ -1,17 +1,10 @@
 /**
- * 
+ * Classe abstraite, parent des autres joueurs (qu'ils soient Humain ou ordinateur)
  */
 package swing;
 
 public abstract class JoueurAbstrait {
-
-	// type de jeton du joueur
-	private char symbole;
-
-	// Le nom du joeur
-
-	private String nom;
-
+	//niveau de "difficulté"
 	private int niveau;
 
 	public int getNiveau() {
@@ -22,6 +15,10 @@ public abstract class JoueurAbstrait {
 		this.niveau = this.niveau;
 	}
 
+	//----------------------------------------------------------------------------------------
+	//jeton du joueur X ou O
+	private char symbole;
+	
 	public JoueurAbstrait(char symbole, int lvl) {
 		this.symbole = symbole;
 		this.niveau = lvl;
@@ -30,15 +27,19 @@ public abstract class JoueurAbstrait {
 	public char getSymbole() {
 		return symbole;
 	}
-	
+
 	public String getCouleur() {
-		if (symbole == 'X')
+		if (symbole == 'X'){
 			return "rouge";
-		else
+		}
+		else{
 			return "jaune";
+		}
 	}
-
-
+	//----------------------------------------------------------------------------------------
+	//nom du joueur
+	private String nom;
+	
 	public String getNom() {
 		return nom;
 	}
@@ -46,6 +47,8 @@ public abstract class JoueurAbstrait {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-// methode abstraite qui sera implementé chez le joueur et L'IA
+	
+	//----------------------------------------------------------------------------------------
+	//méthode abstraite qui sera implementée chez le joueur et L'IA
 	public abstract int placerChar(Grille grille);
 }

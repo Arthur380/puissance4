@@ -55,7 +55,7 @@ class Fenetre implements ActionListener
  
         frame1.add(MonLabel);         // Placement du JLabel sur la fenetre
          
-        button1 = new JButton("Un joueur"); // Creation du JButton par appel du constructeur
+        button1 = new JButton("Une IA"); // Creation du JButton par appel du constructeur
          
         button1.setBounds( 200, 50, 200, 50 ); // Le bouton est place aux coordonnees 100 en abscisse et 150 en ordonnee dans le repere de la fenetre.
  
@@ -64,7 +64,7 @@ class Fenetre implements ActionListener
         button1.addActionListener(this); // On precise que le bouton doit etre ecoute afin de gerer les actions associees a celui-ci.
   
  
-        button2 = new JButton("Deux joueurs"); // Creation du JButton par appel du constructeur
+        button2 = new JButton("Deux IA"); // Creation du JButton par appel du constructeur
          
         button2.setBounds( 200, 150, 200, 50 ); // Le bouton est place aux coordonnees 100 en abscisse et 150 en ordonnee dans le repere de la fenetre.
  
@@ -99,7 +99,7 @@ class Fenetre implements ActionListener
  
         if ( source == button2 )
         {
-        	 new JTableBasiqueAvecModeleDynamiqueObjet().setVisible(true);
+        	 new JTableBasiqueAvecModeleDynamiqueObjet2IA().setVisible(true);
         }           
          
         if ( source == button3)

@@ -22,7 +22,7 @@ public class AlgoAlphaBeta {
 	private int niveau ;
 
 	public int getNiveau() {
-		return 4;
+		return niveau;
 	}
 
 	public void setNiveau(int niveau) {
@@ -73,7 +73,7 @@ public class AlgoAlphaBeta {
 				//si victoire ? calcul du MIN : sinon calcul MAX
 				if (!copieDeLaGrille.Victoire(joueur.getSymbole(),grille.getTourDeQuelJoueur().getSymbole()))
 				{ 
-					valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, this.niveau);}
+					valeurDeJeuCourante = min(joueur, copieDeLaGrille, alphaMin, betaMax, joueur.getNiveau());}
 				else {
 					valeurDeJeuCourante =AlgoAlphaBeta.MAX;
 				}

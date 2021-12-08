@@ -8,7 +8,7 @@ public abstract class JoueurAbstrait {
 	private int niveau;
 
 	public int getNiveau() {
-		return 4;
+		return niveau;
 	}
 
 	public void setNiveau(int niveau) {

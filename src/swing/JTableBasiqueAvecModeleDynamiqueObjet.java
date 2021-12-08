@@ -48,7 +48,7 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 		
 		//nouvelle fenêtre
 		frame = new JFrame("Fenetre de jeu");
-		frame.setTitle("C'est au tour du joueur rouge de jouer");
+		frame.setTitle("C'est au tour du joueur "+ grille.getTourJoueurSuivant().getCouleur() +" de jouer");
 		
 		panel = (JPanel) frame.getContentPane();
 		panel.setLayout(new GridLayout(xsize, ysize + 1));
@@ -98,7 +98,7 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 		{
 			Object source = evt.getSource();
 
-			frame.setTitle("C'est au tour du joueur "+ grille.getTourDeQuelJoueur().getCouleur() +" de jouer");
+			frame.setTitle("C'est au tour du joueur "+ grille.getTourJoueurSuivant().getCouleur() +" de jouer");
 
 			for (int i = 0; i <= ysize; i++) {
 
@@ -108,26 +108,29 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 					grille.insere(i, grille.getTourDeQuelJoueur().getSymbole());
 					System.out.println("i " + i);
 					System.out.println("avant fonction gagnant " +  grille.getTourDeQuelJoueur().getSymbole());
-					gagner = grille.Victoire(grille.getTourDeQuelJoueur().getSymbole(), grille.getTourJoueurSuivant().getSymbole());
-					grille.afficheGrille();
+					
+					updateBoard();
+
+					if (grille.Victoire(grille.getTourDeQuelJoueur().getSymbole(), grille.getTourJoueurSuivant().getSymbole())) {
+						gagner = true;
+						Component[] com = panel.getComponents();
+
+						for (int a = 0; a < com.length; a++) {
+							panel.remove(com[a]);
+						}
+						
+						JLabel jlabel = new JLabel("Victoire du joueur "+ grille.getTourJoueurSuivant().getCouleur());
+						panel.add(jlabel);
+						frame.setTitle("TEST Le joueur "+grille.getTourJoueurSuivant().getCouleur()+" a gagné");
+						break;
+						
+					}
 				}
 
 			}
 			//mise à jour graphique
-			updateBoard();
 			
-			if (gagner) {
-				Component[] com = panel.getComponents();
-
-				for (int a = 0; a < com.length; a++) {
-					panel.remove(com[a]);
-				}
-				
-				JLabel jlabel = new JLabel("Victoire du joueur "+ grille.getTourDeQuelJoueur().getCouleur());
-				panel.add(jlabel);
-				frame.setTitle("Le joueur "+grille.getTourDeQuelJoueur().getCouleur()+" a gagné");
-				
-			} else {
+			if (!gagner) {
 				scenarioIA();
 			}
 		}
@@ -170,17 +173,30 @@ public class JTableBasiqueAvecModeleDynamiqueObjet extends JFrame {
 			int colonneAJouer;
 			colonneAJouer = JoueurActuel.placerChar(grille);
 			grille.insere(colonneAJouer,JoueurActuel.getSymbole());
-			if (grille.Victoire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
-				gagner = true;
-			}
+			gagner = grille.Victoire(grille.getTourDeQuelJoueur().getSymbole(), grille.getTourJoueurSuivant().getSymbole());
+		
 			
 			JoueurActuel = grille.getTourDeQuelJoueur();
-			JoueurSuivant = grille.getTourJoueurSuivant();		
+			JoueurSuivant = grille.getTourJoueurSuivant();	
+			JoueurActuel.placerChar(grille);
+			updateBoard();
+
 		}
 		
-		JoueurActuel.placerChar(grille);
 		//mise à jour graphique
-		updateBoard();
+		
+		/*if(gagner) {
+			Component[] com = panel.getComponents();
+
+			for (int a = 0; a < com.length; a++) {
+				panel.remove(com[a]);
+			}
+			
+			JLabel jlabel = new JLabel("Victoire du joueur "+ grille.getTourDeQuelJoueur().getCouleur());
+			panel.add(jlabel);
+			frame.setTitle("Le joueur "+grille.getTourDeQuelJoueur().getCouleur()+" a gagné");
+			
+		}*/
 	}
 
 }

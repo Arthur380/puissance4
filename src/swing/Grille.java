@@ -516,7 +516,7 @@ public class Grille extends Object implements Cloneable {
 			Grille grille = new Grille();
 			JoueurAbstrait joueurA = new Ordinateur('X', 6);
 			joueurA.setNom("1");
-			JoueurAbstrait joueurB = new Ordinateur('O', 4);
+			JoueurAbstrait joueurB = new Ordinateur('O', 2);
 			joueurB.setNom("2");
 			grille.setJoueur1(joueurA);
 			grille.setJoueur2(joueurB);
@@ -528,11 +528,14 @@ public class Grille extends Object implements Cloneable {
 			boolean gagner=false; 
 			while(!gagner ) {
 				
-				int colonneAJouer;
-				colonneAJouer = JoueurActuel.placerChar(grille);
-				grille.insere(colonneAJouer,JoueurActuel.getSymbole());
+				int colonneAJouer = 0;
 				
-				if (grille.Victoire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole())) {
+				colonneAJouer = JoueurActuel.placerChar(grille);				
+				grille.insere(colonneAJouer,JoueurActuel.getSymbole());				
+					System.out.print("err "+colonneAJouer );
+					grille.afficheGrille();				
+				
+				if (grille.Victoire(JoueurActuel.getSymbole(), JoueurSuivant.getSymbole()) || grille.grillePleine()) {
 					grille.afficheGrille();
 					gagner =true;
 					System.out.print("Bravo c'est gagné "+JoueurActuel.getNom() );
@@ -543,6 +546,7 @@ public class Grille extends Object implements Cloneable {
 				JoueurActuel = grille.getTourDeQuelJoueur();
 				JoueurSuivant = grille.getTourJoueurSuivant();			
 			}	
+			System.out.print(" victoireJ1 "+victoireJ1 +" victoireJ2 "+victoireJ2 +"  Temps " + (System.currentTimeMillis()-debut) );
 		}
 		
 		System.out.print(" victoireJ1 "+victoireJ1 +" victoireJ2 "+victoireJ2 +"  Temps " + (System.currentTimeMillis()-debut) );	

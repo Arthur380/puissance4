@@ -21,6 +21,9 @@ class Fenetre implements ActionListener
     private JButton button3;
     private JLabel MonLabel;
     
+	private static Fenetre fen;      
+
+    
 //--------------------------CONSTRUCTEUR-------------------------------------------------
     /**Constructeur fenêtre
      * (public pour être vu par tous depuis l'extérieur)
@@ -106,5 +109,11 @@ class Fenetre implements ActionListener
         {
         System.exit(0);    
         }  
+    }
+    
+    public static void main(String[] args)
+    { 
+    	//création de la fenêtre par appel du constructeur
+        fen = new Fenetre();
     }
 }

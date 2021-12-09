@@ -236,8 +236,8 @@ public class AlgoAlphaBeta {
 		
 		Grille 	grille 	= new Grille();
 		
-		JoueurAbstrait joueurA = new Ordinateur('X', 8);
-		joueurA.setNom(" Humain");
+		JoueurAbstrait joueurA = new Ordinateur('X', 4);
+		joueurA.setNom("Humain");
 		JoueurAbstrait joueurB = new Ordinateur('O', 4);
 		joueurB.setNom("Ordinateur ");
 		grille.setJoueur1(joueurA);

@@ -148,7 +148,7 @@ public class AlgoAlphaBeta {
 	private int min(JoueurAbstrait joueur, Grille grille, int alpha, int beta, int occurence) {
 		
 		//répétition pour une profondeure donnée
-		if (occurence >= 0) {
+		if (occurence > 0) {
 			
 			int valeurDeJeu = MAX;
 			
